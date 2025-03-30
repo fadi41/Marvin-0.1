@@ -1,16 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Settings - Marvin AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #3a86ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .form-group button:hover {
+      background-color: #8338ec;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Settings</h1>
-  </header>
-  <main>
-    <p>Configure Marvin AI's settings here.</p>
-  </main>
+  <h1>Settings</h1>
+  <div class="form-group">
+    <label for="apiKey">API Key</label>
+    <input type="text" id="apiKey" placeholder="Enter your API key">
+  </div>
+  <div class="form-group">
+    <label for="modelUrl">Model URL</label>
+    <input type="text" id="modelUrl" placeholder="Enter the model URL">
+  </div>
+  <div class="form-group">
+    <button onclick="saveSettings()">Save Settings</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      // Load settings from local storage
+      const apiKey = localStorage.getItem('apiKey');
+      const modelUrl = localStorage.getItem('modelUrl');
+      if (apiKey) {
+        document.getElementById('apiKey').value = apiKey;
+      }
+      if (modelUrl) {
+        document.getElementById('modelUrl').value = modelUrl;
+      }
+    });
+
+    function saveSettings() {
+      const apiKey = document.getElementById('apiKey').value;
+      const modelUrl = document.getElementById('modelUrl').value;
+      localStorage.setItem('apiKey', apiKey);
+      localStorage.setItem('modelUrl', modelUrl);
+      alert('Settings saved successfully!');
+    }
+  </script>
 </body>
 </html>
