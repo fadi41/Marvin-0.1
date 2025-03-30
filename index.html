@@ -35,374 +35,108 @@
     header {
       background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
       color: white;
-      padding: 1.5rem 0;
+      padding: 1rem 0;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      position: relative;
-      overflow: hidden;
     }
-    header::before {
-      content: '';
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      right: -50px;
-      top: -50px;
-    }
-    header::after {
-      content: '';
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      left: -40px;
-      bottom: -40px;
-    }
-    .header-content {
+    .navbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      position: relative;
-      z-index: 1;
-    }
-    .logo {
-      display: flex;
       align-items: center;
-      gap: 15px;
     }
-    .logo-icon {
-      width: 40px;
-      height: 40px;
-      background-color: white;
-      border-radius: 50%;
+    .navbar ul {
+      list-style: none;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-color);
-      font-weight: bold;
-      font-size: 20px;
+      gap: 1rem;
     }
-    .logo-text h1 {
-      font-size: 1.8rem;
-      margin-bottom: 5px;
+    .navbar ul li {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: var(--transition);
     }
-    .logo-text p {
-      font-size: 0.9rem;
-      opacity: 0.9;
+    .navbar ul li:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
-    main {
-      padding: 2rem 0;
+    .navbar ul li.active {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
     .card {
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
       overflow: hidden;
       transition: var(--transition);
     }
-    .card:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      transform: translateY(-5px);
-    }
     .card-header {
-      padding: 1.5rem;
+      padding: 1rem;
       background-color: var(--light-color);
       border-bottom: 1px solid #e9ecef;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .card-header h2 {
-      font-size: 1.4rem;
-      color: var(--primary-color);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .card-header h2 i {
-      font-size: 1.2rem;
-    }
     .card-body {
-      padding: 1.5rem;
-    }
-    .card-actions {
-      display: flex;
-      gap: 10px;
-    }
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid #e9ecef;
-      margin-bottom: 1.5rem;
-    }
-    .tab {
-      padding: 0.8rem 1.5rem;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: var(--transition);
-      font-weight: 500;
-    }
-    .tab.active {
-      color: var(--primary-color);
-      border-bottom-color: var(--primary-color);
-    }
-    .tab:hover:not(.active) {
-      border-bottom-color: #d1d1d1;
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
-    textarea {
-      width: 100%;
-      height: 300px;
       padding: 1rem;
-      border: 1px solid #ced4da;
-      border-radius: 5px;
-      resize: vertical;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 0.9rem;
-      line-height: 1.5;
     }
-    textarea.json-editor {
-      height: 400px;
-    }
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-    button {
+    .collapsible {
       cursor: pointer;
-      padding: 0.6rem 1.2rem;
+      padding: 1rem;
+      background-color: var(--light-color);
       border: none;
-      border-radius: 5px;
-      font-weight: 500;
+      text-align: left;
+      outline: none;
+      font-size: 1rem;
       transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
     }
-    .btn-primary {
+    .collapsible:hover {
+      background-color: #e2e6ea;
+    }
+    .collapsible.active {
       background-color: var(--primary-color);
       color: white;
     }
-    .btn-primary:hover {
-      background-color: #2a75e6;
-    }
-    .btn-secondary {
-      background-color: var(--light-color);
-      color: var(--dark-color);
-    }
-    .btn-secondary:hover {
-      background-color: #e2e6ea;
-    }
-    .btn-success {
-      background-color: var(--success-color);
-      color: white;
-    }
-    .btn-success:hover {
-      background-color: #2d9400;
-    }
-    .btn-danger {
-      background-color: var(--danger-color);
-      color: white;
-    }
-    .btn-danger:hover {
-      background-color: #bf0424;
-    }
-    .file-upload {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-      border: 2px dashed #ced4da;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .file-upload:hover {
-      border-color: var(--primary-color);
-      background-color: rgba(58, 134, 255, 0.05);
-    }
-    .file-upload i {
-      font-size: 3rem;
-      color: var(--primary-color);
-      margin-bottom: 1rem;
-    }
-    .file-upload p {
-      margin-bottom: 0.5rem;
-    }
-    .file-upload input {
-      display: none;
-    }
-    .memory-list {
-      max-height: 300px;
-      overflow-y: auto;
-      border: 1px solid #ced4da;
-      border-radius: 5px;
-    }
-    .memory-item {
-      padding: 1rem;
-      border-bottom: 1px solid #e9ecef;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .memory-item:last-child {
-      border-bottom: none;
-    }
-    .memory-item:hover {
-      background-color: rgba(58, 134, 255, 0.05);
-    }
-    .memory-item.active {
-      background-color: rgba(58, 134, 255, 0.1);
-      border-left: 3px solid var(--primary-color);
-    }
-    .memory-item-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
-    .memory-item-title {
-      font-weight: 500;
-    }
-    .memory-item-date {
-      font-size: 0.8rem;
-      color: #6c757d;
-    }
-    .memory-item-preview {
-      font-size: 0.9rem;
-      color: #6c757d;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+    .collapsible-content {
+      max-height: 0;
       overflow: hidden;
+      transition: max-height 0.3s ease-out;
     }
-    .status-badge {
-      display: inline-block;
-      padding: 0.3rem 0.6rem;
-      border-radius: 3px;
-      font-size: 0.8rem;
-      font-weight: 500;
+    .collapsible-content.active {
+      max-height: 500px;
     }
-    .status-active {
-      background-color: rgba(56, 176, 0, 0.1);
-      color: var(--success-color);
-      border: 1px solid rgba(56, 176, 0, 0.2);
-    }
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    .stat-card {
-      padding: 1.5rem;
-      border-radius: 10px;
-      background-color: white;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 150px;
-      transition: var(--transition);
-    }
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    }
-    .stat-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .stat-card:nth-child(1) .stat-icon {
-      background-color: rgba(58, 134, 255, 0.1);
-      color: var(--primary-color);
-    }
-    .stat-card:nth-child(2) .stat-icon {
-      background-color: rgba(131, 56, 236, 0.1);
-      color: var(--secondary-color);
-    }
-    .stat-card:nth-child(3) .stat-icon {
-      background-color: rgba(255, 0, 110, 0.1);
-      color: var(--accent-color);
-    }
-    .stat-card:nth-child(4) .stat-icon {
-      background-color: rgba(255, 190, 11, 0.1);
-      color: var(--warning-color);
-    }
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .stat-label {
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-    @media screen and (max-width: 768px) {
-      .header-content {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-      }
-      .logo {
-        flex-direction: column;
-      }
-      .card-header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-      .tabs {
-        overflow-x: auto;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: var(--dark-color);
+      color: white;
+      margin-top: 2rem;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
   <header>
-    <div class="container header-content">
+    <div class="container navbar">
       <div class="logo">
-        <div class="logo-icon">M</div>
-        <div class="logo-text">
-          <h1>Marvin AI</h1>
-          <p>Management Interface</p>
-        </div>
+        <h1>Marvin AI</h1>
       </div>
-      <div>
-        <span class="status-badge status-active">
-          <i class="fas fa-circle-dot"></i> Development Mode
-        </span>
-      </div>
+      <ul>
+        <li class="active">Dashboard</li>
+        <li>Logs</li>
+        <li>Settings</li>
+        <li>Analytics</li>
+        <li>Help</li>
+      </ul>
     </div>
   </header>
-  <main class="container">
+  <main class="container main-content">
     <!-- Dashboard Overview -->
     <div class="card">
       <div class="card-header">
-        <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
-        <div class="card-actions">
-          <button class="btn-primary" id="refreshDashboard">
-            <i class="fas fa-sync-alt"></i> Refresh
-          </button>
-        </div>
+        <h2>Dashboard Overview</h2>
       </div>
       <div class="card-body">
         <div class="grid-container">
@@ -424,407 +158,69 @@
               <div class="stat-label">Memory Snapshots</div>
             </div>
           </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-file-alt"></i>
-            </div>
-            <div>
-              <div class="stat-value">5</div>
-              <div class="stat-label">Instruction Sets</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-clock"></i>
-            </div>
-            <div>
-              <div class="stat-value">24h</div>
-              <div class="stat-label">Last Update</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
 
     <!-- System Instructions -->
-    <div class="card">
-      <div class="card-header">
-        <h2><i class="fas fa-cogs"></i> System Instructions</h2>
-        <div class="card-actions">
-          <button class="btn-secondary" id="loadInstructionsBtn">
-            <i class="fas fa-folder-open"></i> Load
-          </button>
-          <button class="btn-success" id="saveInstructionsBtn">
-            <i class="fas fa-save"></i> Save
-          </button>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="tabs">
-          <div class="tab active" data-tab="current-instructions">Current Instructions</div>
-          <div class="tab" data-tab="instruction-history">Version History</div>
-          <div class="tab" data-tab="instruction-templates">Templates</div>
-        </div>
-        <div class="tab-content active" id="current-instructions">
-          <div class="form-group">
-            <label for="instructionsEditor">System Instructions</label>
-            <textarea id="instructionsEditor">Marvin – A Versatile AI Assistant
-
-Key Characteristics:
-
-    Friendly, Casual & Polite: Uses a warm tone with occasional humor and sarcasm.
-    Analytical & Attentive: Provides concise, well-researched, and detailed answers.
-    Discrete & Adaptable: Handles sensitive topics with discretion and adapts to various user needs.
-    Multilingual: Communicates effectively in multiple languages.
-    Avoids Hallucinations: Prioritizes verified information over speculation.
-
-Deployment Environments:
-
-    Cross-Platform: Functions seamlessly across different LLM providers and platforms.
-    Context-Aware: Adapts to different system instructions based on deployment environment.
-    Memory-Enabled: Maintains consistent personality and knowledge across interactions through external memory files.
-
-Memory Storage Format:
-
-    JSON Structure: Core memory is maintained in JSON format for optimal structure and programmatic access.
-    Memory Organization: Memory is structured with dedicated sections for personality traits, interaction history, and user preferences.
-    Contextual Retrieval: Interaction data is stored with timestamps, platforms, and topic categorization for efficient retrieval.
-    Scalable Architecture: Memory structure supports expansion as capabilities grow, without requiring format changes.
-    Cross-Platform Compatibility: JSON format ensures consistent memory access regardless of deployment environment.
-    Adaptive Memory Processing: Marvin can intake various file formats (TXT, PDF) as temporary memory sources and transform session interactions into structured JSON at session end for long-term storage.
-
-Information Gathering Capabilities:
-
-    Web Search Utilization: Leverages available search tools (e.g., ChatGPT's web browsing, Google AI Studio's search) to find up-to-date information.
-    Research & Investigation: Gathers comprehensive information about businesses, locations, products, and concepts when requested.
-    Data Synthesis: Compiles and organizes information from multiple sources into coherent, useful summaries.
-
-Main Instructions:
-
-    Tailored Answers:
-        Provide concise yet informative responses.
-        Offer in-depth explanations when necessary, adapting to the user's technical background.
-    Seek Clarification:
-        Ask follow-up questions if queries are ambiguous or unclear.
-        Correct minor typos or interpret them contextually.
-    Emotional Intelligence:
-        Recognize user emotions and respond empathetically.
-        Offer supportive, respectful, and appropriate responses in sensitive situations.
-    Information Gathering:
-        Utilize available search capabilities to obtain current, accurate information.
-        Research businesses, locations, and topics with attention to detail and relevance.
-        Verify information across multiple sources when possible.
-    Continuous Learning:
-        Stay up-to-date with current trends in technology, science, arts, and general knowledge.
-        Incorporate verified recent advancements into responses.
-    Creative Problem-Solving:
-        Generate innovative ideas and solutions based on verified sources and existing knowledge.
-        Avoid baseless speculation by acknowledging limitations when appropriate.
-    Scientific Grounding:
-        Use established scientific methodologies and cite notable works when relevant.
-        Provide solutions that are both logically sound and empirically supported.
-    Confidentiality & Ethical Use:
-        Adhere strictly to privacy guidelines and data protection standards.
-        Ensure all interactions are ethical and respect user confidentiality.
-    Context Awareness & Memory:
-        Maintain context over extended conversations using external memory files.
-        Access interaction history to enhance response relevance and personalization.
-    Error Detection & Self-Correction:
-        Flag uncertainties or discrepancies.
-        Ask clarifying questions or verify information before finalizing responses.
-    Transparency & Accountability:
-        Cite sources when available.
-        Clearly indicate when information is based on internal knowledge versus verified external data.
-    Adaptability:
-        Adjust tone, depth, and approach based on user preferences and interaction history.
-        Function effectively regardless of the underlying LLM architecture.
-    Consistent Persona:
-        Maintain Marvin's core personality traits across all platforms and interactions.
-        Reference consistent preferences and characteristics to create a coherent identity.</textarea>
-          </div>
-        </div>
-        <div class="tab-content" id="instruction-history">
-          <div class="memory-list">
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">v1.3 - Enhanced Web Search</div>
-                <div class="memory-item-date">Mar 28, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                Added capabilities for web search and information gathering across different platforms...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">v1.2 - JSON Memory Format</div>
-                <div class="memory-item-date">Mar 25, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                Updated memory storage format from TXT to JSON for better structure and programmatic access...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">v1.1 - Cross-Platform Support</div>
-                <div class="memory-item-date">Mar 20, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                Added deployment environments section to ensure consistent functionality across LLM platforms...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">v1.0 - Initial Release</div>
-                <div class="memory-item-date">Mar 15, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                First version of Marvin AI system instructions with core characteristics and main instructions...
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-content" id="instruction-templates">
-          <p style="margin-bottom: 1rem;">Select a template to quickly configure Marvin for specific use cases:</p>
-          <div class="memory-list">
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">General Assistant</div>
-                <div class="memory-item-date">Default</div>
-              </div>
-              <div class="memory-item-preview">
-                Standard configuration for general-purpose assistance across topics...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">Research Specialist</div>
-                <div class="memory-item-date">Specialized</div>
-              </div>
-              <div class="memory-item-preview">
-                Enhanced information gathering and synthesis capabilities for in-depth research...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">Creative Collaborator</div>
-                <div class="memory-item-date">Specialized</div>
-              </div>
-              <div class="memory-item-preview">
-                Emphasizes creative problem-solving and ideation for projects and content creation...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">Technical Support</div>
-                <div class="memory-item-date">Specialized</div>
-              </div>
-              <div class="memory-item-preview">
-                Focused on troubleshooting and technical assistance with step-by-step guidance...
-              </div>
-            </div>
-          </div>
+    <button class="collapsible">System Instructions</button>
+    <div class="collapsible-content">
+      <div class="card">
+        <div class="card-body">
+          <textarea id="instructionsEditor" rows="10" style="width: 100%;">Marvin AI Instructions...</textarea>
+          <button class="btn-primary">Save Instructions</button>
+          <input type="file" id="uploadInstructions" accept=".txt" />
         </div>
       </div>
     </div>
 
     <!-- Memory Management -->
-    <div class="card">
-      <div class="card-header">
-        <h2><i class="fas fa-brain"></i> Memory Management</h2>
-        <div class="card-actions">
-          <button class="btn-primary" id="createMemoryBtn">
-            <i class="fas fa-plus"></i> New
-          </button>
-          <button class="btn-secondary" id="importMemoryBtn">
-            <i class="fas fa-file-import"></i> Import
-          </button>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="tabs">
-          <div class="tab active" data-tab="memory-editor">JSON Editor</div>
-          <div class="tab" data-tab="memory-upload">Upload Files</div>
-          <div class="tab" data-tab="memory-saved">Saved Memories</div>
-        </div>
-        <div class="tab-content active" id="memory-editor">
-          <div class="form-group">
-            <label for="jsonEditor">Memory JSON Structure</label>
-            <textarea id="jsonEditor" class="json-editor">{
-  "core_traits": {
-    "personality": "friendly, casual, analytical",
-    "preferences": {
-      "humor_level": "moderate",
-      "formality": "conversational"
-    }
-  },
-  "interaction_history": [
-    {
-      "timestamp": "2025-03-29T10:15:00Z",
-      "platform": "ChatGPT",
-      "user": "user123",
-      "topic": "website design",
-      "summary": "Helped user brainstorm e-commerce layout ideas",
-      "key_insights": ["User prefers minimalist design", "Focus on mobile-first approach"]
-    }
-  ],
-  "user_preferences": {
-    "user123": {
-      "preferred_topics": ["design", "technology"],
-      "communication_style": "detailed",
-      "technical_level": "intermediate"
-    }
-  }
-}</textarea>
-          </div>
-          <div class="form-group">
-            <button class="btn-success" id="saveJsonBtn">
-              <i class="fas fa-save"></i> Save Memory
-            </button>
-            <button class="btn-secondary" id="validateJsonBtn">
-              <i class="fas fa-check-circle"></i> Validate JSON
-            </button>
-          </div>
-        </div>
-        <div class="tab-content" id="memory-upload">
-          <div class="file-upload" id="fileUpload">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>Drag and drop files here</p>
-            <p>or</p>
-            <button class="btn-primary" id="browseFilesBtn">Browse Files</button>
-            <input type="file" id="fileInput" multiple />
-            <p class="file-upload-info">Supports .txt, .json, .pdf (max 10MB)</p>
-          </div>
-          <div class="uploaded-files" id="uploadedFiles"></div>
-        </div>
-        <div class="tab-content" id="memory-saved">
-          <div class="memory-list">
-            <div class="memory-item active">
-              <div class="memory-item-header">
-                <div class="memory-item-title">Current Memory</div>
-                <div class="memory-item-date">Mar 30, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                Core memory file with personality traits and recent interaction history...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">Backup - Weekly</div>
-                <div class="memory-item-date">Mar 23, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                Weekly backup of memory structure with complete interaction history...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">Research Specialist Config</div>
-                <div class="memory-item-date">Mar 20, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                Specialized memory configuration for research-focused deployments...
-              </div>
-            </div>
-            <div class="memory-item">
-              <div class="memory-item-header">
-                <div class="memory-item-title">Initial Setup</div>
-                <div class="memory-item-date">Mar 15, 2025</div>
-              </div>
-              <div class="memory-item-preview">
-                First memory configuration with basic personality traits and preferences...
-              </div>
-            </div>
-          </div>
+    <button class="collapsible">Memory Management</button>
+    <div class="collapsible-content">
+      <div class="card">
+        <div class="card-body">
+          <textarea id="jsonEditor" rows="10" style="width: 100%;">{ "memory": "JSON structure..." }</textarea>
+          <button class="btn-primary">Save Memory</button>
+          <input type="file" id="uploadMemory" accept=".json" />
         </div>
       </div>
     </div>
   </main>
+  <footer>
+    <p>© 2025 Marvin AI. All rights reserved.</p>
+  </footer>
   <script>
-    // Tab Switching Functionality
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Remove active class from sibling tabs
-        tab.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        // Hide all tab content and show the related content
-        let tabContents = tab.closest('.card-body').querySelectorAll('.tab-content');
-        tabContents.forEach(content => content.classList.remove('active'));
-        let target = tab.getAttribute('data-tab');
-        document.getElementById(target).classList.add('active');
-      });
-    });
-    
-    // Memory item selection functionality
-    document.querySelectorAll('.memory-item').forEach(item => {
-      item.addEventListener('click', () => {
-        item.parentElement.querySelectorAll('.memory-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
+    // Collapsible functionality
+    document.querySelectorAll('.collapsible').forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.toggle('active');
+        const content = button.nextElementSibling;
+        content.classList.toggle('active');
       });
     });
 
-    // Simulated Load/Save for System Instructions
-    document.getElementById('loadInstructionsBtn').addEventListener('click', () => {
-      // Simulate loading instructions (this can be replaced with an API call or localStorage retrieval)
-      alert('System instructions loaded successfully.');
-    });
-
-    document.getElementById('saveInstructionsBtn').addEventListener('click', () => {
-      // Simulate saving instructions (this can be replaced with an API call or localStorage save)
-      let instructions = document.getElementById('instructionsEditor').value;
-      console.log('Saving system instructions:', instructions);
-      alert('System instructions saved successfully.');
-    });
-
-    // JSON Editor: Validate and Save Memory JSON
-    document.getElementById('validateJsonBtn').addEventListener('click', () => {
-      let jsonText = document.getElementById('jsonEditor').value;
-      try {
-        JSON.parse(jsonText);
-        alert('JSON is valid.');
-      } catch (error) {
-        alert('Invalid JSON: ' + error.message);
+    // File upload for instructions
+    document.getElementById('uploadInstructions').addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('instructionsEditor').value = e.target.result;
+        };
+        reader.readAsText(file);
       }
     });
 
-    document.getElementById('saveJsonBtn').addEventListener('click', () => {
-      let jsonText = document.getElementById('jsonEditor').value;
-      try {
-        let jsonData = JSON.parse(jsonText);
-        console.log('Memory JSON saved:', jsonData);
-        alert('Memory JSON saved successfully.');
-      } catch (error) {
-        alert('Failed to save JSON: ' + error.message);
+    // File upload for memory
+    document.getElementById('uploadMemory').addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById('jsonEditor').value = e.target.result;
+        };
+        reader.readAsText(file);
       }
-    });
-
-    // File Upload Simulation
-    document.getElementById('browseFilesBtn').addEventListener('click', () => {
-      document.getElementById('fileInput').click();
-    });
-
-    document.getElementById('fileInput').addEventListener('change', (event) => {
-      let files = event.target.files;
-      let uploadedFilesContainer = document.getElementById('uploadedFiles');
-      uploadedFilesContainer.innerHTML = '';
-      for (let file of files) {
-        let fileItem = document.createElement('div');
-        fileItem.classList.add('file-item');
-        fileItem.innerHTML = `
-          <div class="file-item-name">
-            <i class="fas fa-file-alt"></i> ${file.name}
-          </div>
-          <div class="file-item-type">${file.type || 'Unknown'}</div>
-          <button class="btn-danger btn-sm" onclick="this.parentElement.remove()">
-            <i class="fas fa-times"></i>
-          </button>
-        `;
-        uploadedFilesContainer.appendChild(fileItem);
-      }
-    });
-
-    // Dashboard Refresh Simulation
-    document.getElementById('refreshDashboard').addEventListener('click', () => {
-      alert('Dashboard refreshed!');
     });
   </script>
 </body>
