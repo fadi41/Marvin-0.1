@@ -26,10 +26,10 @@ p {
 }
 
 .card.console {
-  flex: 0 0 40%; /* Fixed width for the Marvin Development Console */
+  flex: 0 0 30%; /* Fixed width for the Marvin Development Console */
 }
 .card {
-    max-width: 720px; /* Increased width for better layout */
+    max-width: 300px; /* Increased width for better layout */
     margin: 1rem auto; /* Added vertical spacing */
     padding: 20px; /* Increased padding for better spacing */
     border: 1px solid #d1d5db; /* Softer border color */
