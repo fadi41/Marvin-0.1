@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvin Development Console</title>
+  <style>
+    :root {
+      --primary-color: #3a86ff;
+      --secondary-color: #8338ec;
+      --accent-color: #ff006e;
+      --dark-color: #1a1a2e;
+      --light-color: #f8f9fa;
+      --transition: all 0.3s ease;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f0f2f5;
+      color: var(--dark-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+    .section {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    button:hover {
+      background-color: var(--secondary-color);
+    }
+    #statusArea {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Marvin Development Console</h1>
+    <p>Manage Marvin's System Instructions and Memory Log</p>
+  </header>
+  <main>
+    <!-- System Instructions Section -->
+    <div class="section">
+      <h2>System Instructions</h2>
+      <textarea id="systemInstructions" placeholder="Edit Marvin's system instructions here..."></textarea>
+      <button id="loadInstructions">Load Instructions (.txt)</button>
+      <button id="saveInstructions">Save Instructions (.txt)</button>
+      <button id="clearInstructions">Clear Instructions</button>
+      <input type="file" id="instructionsFileInput" accept=".txt" style="display: none;" />
+    </div>
+
+    <!-- Memory Log Section -->
+    <div class="section">
+      <h2>Memory Log</h2>
+      <textarea id="memoryLog" placeholder="Edit Marvin's memory log (JSON format) here..."></textarea>
+      <button id="loadMemoryLog">Load Memory Log (.json)</button>
+      <button id="saveMemoryLog">Save Memory Log (.json)</button>
+      <button id="validateMemoryLog">Validate JSON</button>
+      <button id="clearMemoryLog">Clear Memory Log</button>
+      <input type="file" id="memoryLogFileInput" accept=".json" style="display: none;" />
+    </div>
+
+    <!-- Status Area -->
+    <div id="statusArea">Status messages will appear here...</div>
+  </main>
+  <script>
+    // Status Area Helper
+    const statusArea = document.getElementById('statusArea');
+    const updateStatus = (message, isError = false) => {
+      statusArea.textContent = message;
+      statusArea.style.color = isError ? 'red' : 'green';
+    };
+
+    // System Instructions Logic
+    const systemInstructions = document.getElementById('systemInstructions');
+    const instructionsFileInput = document.getElementById('instructionsFileInput');
+
+    document.getElementById('loadInstructions').addEventListener('click', () => instructionsFileInput.click());
+    instructionsFileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          systemInstructions.value = reader.result;
+          updateStatus('Instructions loaded successfully.');
+        };
+        reader.onerror = () => updateStatus('Error reading instructions file.', true);
+        reader.readAsText(file);
+      }
+    });
+
+    document.getElementById('saveInstructions').addEventListener('click', () => {
+      const blob = new Blob([systemInstructions.value], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'marvin_instructions.txt';
+      link.click();
+      updateStatus('Instructions saved successfully.');
+    });
+
+    document.getElementById('clearInstructions').addEventListener('click', () => {
+      systemInstructions.value = '';
+      updateStatus('Instructions cleared.');
+    });
+
+    // Memory Log Logic
+    const memoryLog = document.getElementById('memoryLog');
+    const memoryLogFileInput = document.getElementById('memoryLogFileInput');
+
+    document.getElementById('loadMemoryLog').addEventListener('click', () => memoryLogFileInput.click());
+    memoryLogFileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          memoryLog.value = reader.result;
+          updateStatus('Memory log loaded successfully.');
+        };
+        reader.onerror = () => updateStatus('Error reading memory log file.', true);
+        reader.readAsText(file);
+      }
+    });
+
+    document.getElementById('saveMemoryLog').addEventListener('click', () => {
+      try {
+        JSON.parse(memoryLog.value); // Validate JSON before saving
+        const blob = new Blob([memoryLog.value], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'marvin_memory_log.json';
+        link.click();
+        updateStatus('Memory log saved successfully.');
+      } catch (error) {
+        updateStatus('Invalid JSON. Cannot save memory log.', true);
+      }
+    });
+
+    document.getElementById('validateMemoryLog').addEventListener('click', () => {
+      try {
+        JSON.parse(memoryLog.value);
+        updateStatus('JSON is valid.');
+      } catch (error) {
+        updateStatus('Invalid JSON.', true);
+      }
+    });
+
+    document.getElementById('clearMemoryLog').addEventListener('click', () => {
+      memoryLog.value = '';
+      updateStatus('Memory log cleared.');
+    });
+  </script>
+</body>
+</html>
