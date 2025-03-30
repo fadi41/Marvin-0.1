@@ -1,11 +1,10 @@
 ---
 title: Marvin AI Assistant
-emoji: 🤖
+emoji: 🌐
 colorFrom: blue
 colorTo: indigo
-sdk: gradio
-sdk_version: 5.23.1
-app_file: app.py
+sdk: static
+app_file: index.html
 pinned: false
 ---
 
@@ -16,14 +15,13 @@ Welcome to the Marvin Hugging Face Space repository!
 ## About Marvin
 Marvin is a versatile AI assistant designed to assist users with various tasks and provide helpful information across different domains.
 
+## How to Use
+This repository hosts a **static webpage**. The main entry point is [`index.html`](./index.html), which renders the Marvin AI interface.
+
 ## Contents
-- `model/`: Directory containing the Marvin model files.
-- `tokenizer/`: Directory with the tokenizer files.
-- `config.json`: Configuration file for the Marvin model.
+- `index.html`: The main webpage file.
 - `README.md`: This file, providing an overview of the repository.
 - `.gitattributes`: Git attributes file for handling repository content.
-
-Feel free to explore the files and use the Marvin model for your AI projects!
 
 For more details on Marvin, visit [Marvin's website](https://marvin-ai.com).
 
