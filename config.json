@@ -1,0 +1,24 @@
+# Create the config.json file content
+config_json_content = {
+    "model_name": "marvin",
+    "version": "1.0",
+    "description": "Configuration file for the Marvin Hugging Face Space",
+    "language": "multilingual",
+    "architecture": "transformer",
+    "tokenizer": {
+        "type": "BPE",
+        "vocab_size": 30000
+    },
+    "training": {
+        "epochs": 10,
+        "batch_size": 32
+    }
+}
+
+# Write the config.json file
+config_json_path = '/mnt/data/config.json'
+import json
+with open(config_json_path, 'w') as file:
+    json.dump(config_json_content, file, indent=4)
+
+config_json_path
