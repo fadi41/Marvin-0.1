@@ -176,5 +176,39 @@
   <footer>
     <p>© 2025 Marvin AI. All rights reserved.</p>
   </footer>
+  <script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const sendButton = document.querySelector('.chat-box button');
+    sendButton.addEventListener('click', sendMessage);
+  });
+
+  async function sendMessage() {
+    const textarea = document.querySelector('.chat-box textarea');
+    const message = textarea.value.trim();
+    if (!message) return;
+
+    const apiKey = localStorage.getItem('apiKey');
+    const modelUrl = localStorage.getItem('modelUrl');
+    if (!apiKey || !modelUrl) {
+      alert('Please set your API key and Model URL in the settings page.');
+      return;
+    }
+
+    try {
+      const response = await fetch(modelUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({ prompt: message })
+      });
+      const data = await response.json();
+      console.log(data); // Handle the response data as needed
+    } catch (error) {
+      console.error('Error making API call:', error);
+    }
+  }
+</script>
 </body>
 </html>
