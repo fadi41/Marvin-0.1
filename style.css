@@ -18,7 +18,16 @@ p {
     margin-bottom: 12px;
     margin-top: 6px;
 }
+.main-content {
+  display: flex;
+  flex: 1;
+  gap: 1.5rem;
+  justify-content: flex-start;  /* Changed from center to flex-start to align items to the left */
+}
 
+.card.console {
+  flex: 0 0 40%; /* Fixed width for the Marvin Development Console */
+}
 .card {
     max-width: 720px; /* Increased width for better layout */
     margin: 1rem auto; /* Added vertical spacing */
