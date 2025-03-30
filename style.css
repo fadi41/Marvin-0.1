@@ -1,15 +1,3 @@
-/* Existing styles */
-.navbar {
-    display: flex;
-    justify-content: flex-start; /* Changed from space-between to flex-start */
-    align-items: left;
-}
-
-.logo {
-    margin-right: 20px; /* Add margin to the right of the logo */
-}
-
-/* Other styles in the stylesheet */
 body {
     padding: 2rem;
     font-family: -apple-system, BlinkMacSystemFont, "Arial", sans-serif;
@@ -30,29 +18,17 @@ p {
     margin-bottom: 12px;
     margin-top: 6px;
 }
-.main-content {
-    display: flex;
-    flex: 1;
-    gap: 1.5rem;
-    justify-content: flex-start; /* Changed from center to flex-start to align items to the left */
-}
 
 .card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    transition: var(--transition);
-    flex: 1;
+    max-width: 720px; /* Increased width for better layout */
+    margin: 1rem auto; /* Added vertical spacing */
+    padding: 20px; /* Increased padding for better spacing */
+    border: 1px solid #d1d5db; /* Softer border color */
+    border-radius: 12px; /* Slightly smaller border radius for a modern look */
+    background-color: #ffffff; /* White background for cards */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-.card.console {
-    flex: 0 0 40%; /* Fixed width for the Marvin Development Console */
-}
-
-.card.chat-box {
-    flex: 1; /* Ensures the chat box takes the remaining space */
-}
 .card p:last-child {
     margin-bottom: 0;
 }
