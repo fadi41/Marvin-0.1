@@ -1,7 +1,3 @@
----
-title: Marvin AI Management Interface
-
----
 
 # Marvin AI Management Interface
 
