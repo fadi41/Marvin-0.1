@@ -83,31 +83,6 @@
     .card-body {
       padding: 1rem;
     }
-    .collapsible {
-      cursor: pointer;
-      padding: 1rem;
-      background-color: var(--light-color);
-      border: none;
-      text-align: left;
-      outline: none;
-      font-size: 1rem;
-      transition: var(--transition);
-    }
-    .collapsible:hover {
-      background-color: #e2e6ea;
-    }
-    .collapsible.active {
-      background-color: var(--primary-color);
-      color: white;
-    }
-    .collapsible-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-    }
-    .collapsible-content.active {
-      max-height: 500px;
-    }
     footer {
       text-align: center;
       padding: 1rem;
@@ -124,11 +99,11 @@
         <h1>Marvin AI</h1>
       </div>
       <ul>
-        <li class="active">Dashboard</li>
-        <li>Logs</li>
-        <li>Settings</li>
-        <li>Analytics</li>
-        <li>Help</li>
+        <li class="active"><a href="index.html">Dashboard</a></li>
+        <li><a href="logs.html">Logs</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="analytics.html">Analytics</a></li>
+        <li><a href="help.html">Help</a></li>
       </ul>
     </div>
   </header>
@@ -139,111 +114,12 @@
         <h2>Dashboard Overview</h2>
       </div>
       <div class="card-body">
-        <div class="grid-container">
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-robot"></i>
-            </div>
-            <div>
-              <div class="stat-value">3</div>
-              <div class="stat-label">Deployed Instances</div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-memory"></i>
-            </div>
-            <div>
-              <div class="stat-value">12</div>
-              <div class="stat-label">Memory Snapshots</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- System Instructions -->
-    <button class="collapsible">System Instructions</button>
-    <div class="collapsible-content">
-      <div class="card">
-        <div class="card-body">
-          <textarea id="instructionsEditor" rows="10" style="width: 100%;">Marvin AI Instructions...</textarea>
-          <button class="btn-primary" id="saveInstructions">Save Instructions</button>
-          <button class="btn-primary" id="downloadInstructions">Download Instructions</button>
-          <input type="file" id="uploadInstructions" accept=".txt" />
-        </div>
-      </div>
-    </div>
-
-    <!-- Memory Management -->
-    <button class="collapsible">Memory Management</button>
-    <div class="collapsible-content">
-      <div class="card">
-        <div class="card-body">
-          <textarea id="jsonEditor" rows="10" style="width: 100%;">{ "memory": "JSON structure..." }</textarea>
-          <button class="btn-primary" id="saveMemory">Save Memory</button>
-          <button class="btn-primary" id="downloadMemory">Download Memory</button>
-          <input type="file" id="uploadMemory" accept=".json" />
-        </div>
+        <p>Welcome to Marvin AI's Dashboard! Use the navigation menu to explore Logs, Settings, Analytics, and Help pages.</p>
       </div>
     </div>
   </main>
   <footer>
     <p>© 2025 Marvin AI. All rights reserved.</p>
   </footer>
-  <script>
-    // Collapsible functionality
-    document.querySelectorAll('.collapsible').forEach(button => {
-      button.addEventListener('click', () => {
-        button.classList.toggle('active');
-        const content = button.nextElementSibling;
-        content.classList.toggle('active');
-      });
-    });
-
-    // File upload for instructions
-    document.getElementById('uploadInstructions').addEventListener('change', function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          document.getElementById('instructionsEditor').value = e.target.result;
-        };
-        reader.readAsText(file);
-      }
-    });
-
-    // File upload for memory
-    document.getElementById('uploadMemory').addEventListener('change', function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          document.getElementById('jsonEditor').value = e.target.result;
-        };
-        reader.readAsText(file);
-      }
-    });
-
-    // Download functionality for instructions
-    document.getElementById('downloadInstructions').addEventListener('click', function () {
-      const content = document.getElementById('instructionsEditor').value;
-      const blob = new Blob([content], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'instructions.txt';
-      link.click();
-    });
-
-    // Download functionality for memory
-    document.getElementById('downloadMemory').addEventListener('click', function () {
-      const content = document.getElementById('jsonEditor').value;
-      const blob = new Blob([content], { type: 'application/json' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'memory.json';
-      link.click();
-    });
-  </script>
 </body>
 </html>
