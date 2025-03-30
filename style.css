@@ -2,7 +2,7 @@
 .navbar {
     display: flex;
     justify-content: flex-start; /* Changed from space-between to flex-start */
-    align-items: center;
+    align-items: left;
 }
 
 .logo {
