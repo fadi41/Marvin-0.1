@@ -11,9 +11,6 @@
       --accent-color: #ff006e;
       --dark-color: #1a1a2e;
       --light-color: #f8f9fa;
-      --success-color: #38b000;
-      --warning-color: #ffbe0b;
-      --danger-color: #d90429;
       --transition: all 0.3s ease;
     }
     * {
@@ -83,6 +80,13 @@
     .card-body {
       padding: 1rem;
     }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
     footer {
       text-align: center;
       padding: 1rem;
@@ -115,6 +119,16 @@
       </div>
       <div class="card-body">
         <p>Welcome to Marvin AI's Dashboard! Use the navigation menu to explore Logs, Settings, Analytics, and Help pages.</p>
+      </div>
+    </div>
+
+    <!-- Marvin Development Console -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Marvin Development Console</h2>
+      </div>
+      <div class="card-body">
+        <iframe src="main.html" title="Marvin Development Console"></iframe>
       </div>
     </div>
   </main>
