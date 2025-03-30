@@ -1,28 +1,44 @@
 body {
-	padding: 2rem;
-	font-family: -apple-system, BlinkMacSystemFont, "Arial", sans-serif;
+    padding: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Arial", sans-serif;
+    background-color: #f9fafb; /* Light background for better readability */
+    color: #1f2937; /* Darker text color for better contrast */
+    line-height: 1.6; /* Improved readability */
 }
 
 h1 {
-	font-size: 16px;
-	margin-top: 0;
+    font-size: 24px; /* Increased font size for better visibility */
+    margin-top: 0;
+    color: #111827; /* Darker color for headings */
 }
 
 p {
-	color: rgb(107, 114, 128);
-	font-size: 15px;
-	margin-bottom: 10px;
-	margin-top: 5px;
+    color: #6b7280; /* Softer gray for paragraph text */
+    font-size: 16px; /* Slightly larger font size for readability */
+    margin-bottom: 12px;
+    margin-top: 6px;
 }
 
 .card {
-	max-width: 620px;
-	margin: 0 auto;
-	padding: 16px;
-	border: 1px solid lightgray;
-	border-radius: 16px;
+    max-width: 720px; /* Increased width for better layout */
+    margin: 1rem auto; /* Added vertical spacing */
+    padding: 20px; /* Increased padding for better spacing */
+    border: 1px solid #d1d5db; /* Softer border color */
+    border-radius: 12px; /* Slightly smaller border radius for a modern look */
+    background-color: #ffffff; /* White background for cards */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .card p:last-child {
-	margin-bottom: 0;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem; /* Adjust padding for smaller screens */
+    }
+
+    .card {
+        padding: 16px; /* Adjust padding for smaller screens */
+    }
 }
