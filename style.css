@@ -19,7 +19,7 @@ p {
     margin-top: 6px;
 }
 .main-content {
-  display: flex;
+  display: flex-start;
   flex: 1;
   gap: 1.5rem;
   justify-content: flex-start;  /* Changed from center to flex-start to align items to the left */
