@@ -168,7 +168,8 @@
       <div class="card">
         <div class="card-body">
           <textarea id="instructionsEditor" rows="10" style="width: 100%;">Marvin AI Instructions...</textarea>
-          <button class="btn-primary">Save Instructions</button>
+          <button class="btn-primary" id="saveInstructions">Save Instructions</button>
+          <button class="btn-primary" id="downloadInstructions">Download Instructions</button>
           <input type="file" id="uploadInstructions" accept=".txt" />
         </div>
       </div>
@@ -180,7 +181,8 @@
       <div class="card">
         <div class="card-body">
           <textarea id="jsonEditor" rows="10" style="width: 100%;">{ "memory": "JSON structure..." }</textarea>
-          <button class="btn-primary">Save Memory</button>
+          <button class="btn-primary" id="saveMemory">Save Memory</button>
+          <button class="btn-primary" id="downloadMemory">Download Memory</button>
           <input type="file" id="uploadMemory" accept=".json" />
         </div>
       </div>
@@ -221,6 +223,26 @@
         };
         reader.readAsText(file);
       }
+    });
+
+    // Download functionality for instructions
+    document.getElementById('downloadInstructions').addEventListener('click', function () {
+      const content = document.getElementById('instructionsEditor').value;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'instructions.txt';
+      link.click();
+    });
+
+    // Download functionality for memory
+    document.getElementById('downloadMemory').addEventListener('click', function () {
+      const content = document.getElementById('jsonEditor').value;
+      const blob = new Blob([content], { type: 'application/json' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'memory.json';
+      link.click();
     });
   </script>
 </body>
