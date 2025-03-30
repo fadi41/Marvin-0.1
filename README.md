@@ -1,3 +1,13 @@
+---
+title: Marvin AI Assistant
+emoji: 🤖
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+sdk_version: "3.50.0"
+app_file: app.py
+pinned: false
+---
 
 # Marvin Hugging Face Space Repository
 
@@ -16,3 +26,7 @@ Marvin is a versatile AI assistant designed to assist users with various tasks a
 Feel free to explore the files and use the Marvin model for your AI projects!
 
 For more details on Marvin, visit [Marvin's website](https://marvin-ai.com).
+
+---
+
+Check out the configuration reference at [Hugging Face Spaces Config](https://huggingface.co/docs/hub/spaces-config-reference).
