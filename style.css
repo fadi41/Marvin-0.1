@@ -1,3 +1,15 @@
+/* Existing styles */
+.navbar {
+    display: flex;
+    justify-content: flex-start; /* Changed from space-between to flex-start */
+    align-items: center;
+}
+
+.logo {
+    margin-right: 20px; /* Add margin to the right of the logo */
+}
+
+/* Other styles in the stylesheet */
 body {
     padding: 2rem;
     font-family: -apple-system, BlinkMacSystemFont, "Arial", sans-serif;
