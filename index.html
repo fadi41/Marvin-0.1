@@ -233,9 +233,9 @@ iframe {
     const message = textarea.value.trim();
     if (!message) return;
 
-    const apiKey = localStorage.getItem('apiKey');
+    const api-key = localStorage.getItem('api-key');
     const modelUrl = localStorage.getItem('modelUrl');
-    if (!apiKey || !modelUrl) {
+    if (!api-key || !modelUrl) {
       alert('Please set your API key and Model URL in the settings page.');
       return;
     }
@@ -245,7 +245,7 @@ iframe {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+          'Authorization': `Bearer ${api-key}`
         },
         body: JSON.stringify({ prompt: message })
       });
