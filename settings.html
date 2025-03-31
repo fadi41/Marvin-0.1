@@ -111,15 +111,16 @@
             gap: 15px;
             margin-bottom: 20px;
         }
-        .model-option {
-            flex: 1;
-            text-align: center;
-            padding: 15px;
-            background-color: #ecf0f1;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    model-option {
+    flex: 1;	
+    text-align: center;
+    padding: 15px;
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    border: 1px solid #ccc; /* Add border to make buttons visible */
+    cursor: pointer;
+    transition: all 0.3s;
+}
         .model-option.active {
             background-color: #3498db;
             color: white;
@@ -178,17 +179,6 @@
   <div class="toolbar">
     <button onclick="controlPanel()">Control Panel</button>
   </div>
-   <div class="container">
-        <div class="model-switch">
-            <div class="model-option active" id="claude-option" onclick="switchModel('claude')">
-                <h3>Claude 3.7 Sonnet</h3>
-                <p>Advanced reasoning capabilities</p>
-            </div>
-            <div class="model-option" id="gemini-option" onclick="switchModel('gemini')">
-                <h3>Gemini 1.5</h3>
-                <p>Google's multimodal AI model</p>
-            </div>
-        </div>
             <div class="right-panel">
                 <div class="card">
                     <h2>Configuration Settings</h2>
@@ -266,7 +256,7 @@
             localStorage.setItem('ai-config', JSON.stringify(config));
             document.getElementById('config-status').textContent = 'Configuration saved';
             logAction('Configuration settings saved');
-            
+				
             // Reset notification after 3 seconds
             setTimeout(() => {
                 document.getElementById('config-status').textContent = 'Configuration active';
