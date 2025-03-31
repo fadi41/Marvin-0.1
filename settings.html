@@ -72,6 +72,37 @@
             font-weight: 600;
             transition: background-color 0.3s;
         }
+		   .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #3a86ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .form-group button:hover {
+      background-color: #8338ec;
+    }
+    nav {
+      margin-bottom: 20px;
+    }
+    nav a {
+      margin-right: 15px;
+      text-decoration: none;
+      color: #3a86ff;
+    }
+    nav a:hover {
+      tex
         button:hover {
             background-color: #2980b9;
         }
@@ -117,15 +148,37 @@
         .memory-controls button {
             flex: 1;
             min-width: 120px;
-        }
+        } 
+		.toolbar {
+      margin-bottom: 20px;
+    }
+		.toolbar button {
+      margin-right: 10px;
+      padding: 10px 15px;
+      background-color: #3a86ff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .toolbar button:hover {
+      background-color: #8338ec;
+    }
     </style>
 </head>
 <body>
-    <header>
-        <h1>AI System Control Panel</h1>
-    </header>
-    
-    <div class="container">
+  <h1>Settings</h1>
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="logs.html">Logs</a>
+    <a href="settings.html">Settings</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="help.html">Help</a>
+  </nav>
+  <div class="toolbar">
+    <button onclick="controlPanel()">Control Panel</button>
+  </div>
+   <div class="container">
         <div class="model-switch">
             <div class="model-option active" id="claude-option" onclick="switchModel('claude')">
                 <h3>Claude 3.7 Sonnet</h3>
@@ -136,28 +189,6 @@
                 <p>Google's multimodal AI model</p>
             </div>
         </div>
-        
-        <div class="control-panel">
-            <div class="left-panel">
-                <div class="card">
-                    <h2>System Instructions</h2>
-                    <textarea id="system-instructions" placeholder="Enter system instructions here...">You are an advanced AI assistant. Be concise, helpful, and accurate in your responses. If you don't know something, acknowledge it honestly.</textarea>
-                    <button onclick="saveSystemInstructions()">Save Instructions</button>
-                    <div class="status" id="system-status">Ready</div>
-                </div>
-                
-                <div class="card">
-                    <h2>Memory I/O</h2>
-                    <div class="memory-controls">
-                        <button onclick="loadMemory()">Load Memory</button>
-                        <button onclick="saveMemory()">Save Memory</button>
-                        <button onclick="clearMemory()">Clear Memory</button>
-                    </div>
-                    <textarea id="memory-content" placeholder="Memory content will appear here..."></textarea>
-                    <div class="status" id="memory-status">No cached memory</div>
-                </div>
-            </div>
-            
             <div class="right-panel">
                 <div class="card">
                     <h2>Configuration Settings</h2>
@@ -221,58 +252,7 @@
             logAction(`Switched to ${model} model`);
         }
         
-        // Save system instructions
-        function saveSystemInstructions() {
-            systemInstructions = document.getElementById('system-instructions').value;
-            document.getElementById('system-status').textContent = 'Instructions saved';
-            logAction('System instructions updated');
-            
-            // Reset notification after 3 seconds
-            setTimeout(() => {
-                document.getElementById('system-status').textContent = 'Ready';
-            }, 3000);
-        }
-        
-        // Memory functions
-        function loadMemory() {
-            try {
-                const savedMemory = localStorage.getItem('ai-memory');
-                if (savedMemory) {
-                    memory = JSON.parse(savedMemory);
-                    document.getElementById('memory-content').value = JSON.stringify(memory, null, 2);
-                    document.getElementById('memory-status').textContent = 'Memory loaded from local storage';
-                    logAction('Memory loaded from local storage');
-                } else {
-                    document.getElementById('memory-status').textContent = 'No saved memory found';
-                    logAction('Attempted to load memory but none found');
-                }
-            } catch (error) {
-                document.getElementById('memory-status').textContent = 'Error loading memory';
-                logAction(`Memory load error: ${error.message}`);
-            }
-        }
-        
-        function saveMemory() {
-            try {
-                const memoryContent = document.getElementById('memory-content').value;
-                memory = JSON.parse(memoryContent);
-                localStorage.setItem('ai-memory', JSON.stringify(memory));
-                document.getElementById('memory-status').textContent = 'Memory saved to local storage';
-                logAction('Memory saved to local storage');
-            } catch (error) {
-                document.getElementById('memory-status').textContent = 'Error: Invalid JSON format';
-                logAction(`Memory save error: ${error.message}`);
-            }
-        }
-        
-        function clearMemory() {
-            memory = {};
-            document.getElementById('memory-content').value = '';
-            localStorage.removeItem('ai-memory');
-            document.getElementById('memory-status').textContent = 'Memory cleared';
-            logAction('Memory cleared');
-        }
-        
+       
         // Save configuration
         function saveConfiguration() {
             const config = {
