@@ -80,7 +80,17 @@ main.container.main-content { /* Target the main content container */
       flex: 1;
       gap: 1.5rem;
       justify-content: flex-start; /* Changed from center to flex-start to align items to the left */
-    }
+    } 
+	 .log-container {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+        } 
+		
    .card {
   background-color: white;
   border-radius: 10px;
@@ -217,7 +227,14 @@ iframe {
         <textarea placeholder="Type your message here..."></textarea>
         <button>Send</button>
       </div>
-    </div>
+	   <div class="card">
+                    <h2>System Logs</h2>
+                    <div class="log-container" id="system-logs">
+                        [SYSTEM] Initializing AI control panel...
+                        [SYSTEM] Loading default configurations
+                        [SYSTEM] System ready
+                    </div>
+       </div>
   </main>
   <footer>
     <p>© 2025 Marvin AI. All rights reserved.</p>
@@ -227,7 +244,13 @@ iframe {
     const sendButton = document.querySelector('.chat-box button');
     sendButton.addEventListener('click', sendMessage);
   });
-
+ // Log system actions
+        function logAction(message) {
+            const logs = document.getElementById('system-logs');
+            const timestamp = new Date().toLocaleTimeString();
+            logs.innerHTML += `<br>[${timestamp}] ${message}`;
+            logs.scrollTop = logs.scrollHeight;
+        }	
   async function sendMessage() {
     const textarea = document.querySelector('.chat-box textarea');
     const message = textarea.value.trim();
