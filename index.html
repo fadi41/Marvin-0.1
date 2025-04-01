@@ -183,6 +183,7 @@ iframe {
   transition: var(--transition);
   height: 40px; /* Match textarea height */
 }
+
     footer {
       text-align: center;
       padding: 1rem;
@@ -217,16 +218,12 @@ iframe {
         <iframe src="main.html" title="Marvin Development Console"></iframe>
       </div>
     </div>
-
-    <!-- Chat Box -->
-    <div class="card chat-box">
-      <div class="card-header">
-        <h2>Chat with Marvin AI</h2>
-      </div>
-      <div class="card-body">
-        <textarea placeholder="Type your message here..."></textarea>
-        <button>Send</button>
-      </div>
+	
+  <div class="card-body">
+    <div id="chatDisplay"></div>  <!-- Add this line -->
+    <textarea placeholder="Type your message here..."></textarea>
+    <button>Send</button>
+  </div> 
 	   <div class="card">
                     <h2>System Logs</h2>
                     <div class="log-container" id="system-logs">
@@ -256,9 +253,9 @@ iframe {
     const message = textarea.value.trim();
     if (!message) return;
 
-    const api-key = localStorage.getItem('api-key');
+    const apiKey = localStorage.getItem('api-key');
     const modelUrl = localStorage.getItem('modelUrl');
-    if (!api-key || !modelUrl) {
+    if (!apiKey || !modelUrl) {
       alert('Please set your API key and Model URL in the settings page.');
       return;
     }
@@ -268,16 +265,24 @@ iframe {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${api-key}`
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({ prompt: message })
       });
       const data = await response.json();
-      console.log(data); // Handle the response data as needed
+
+      // New code to display repsonse
+      const chatDisplay = document.getElementById('chatDisplay');
+      const messageElement = document.createElement('p');
+      messageElement.textContent = data.content; // Assuming the API returns a "content" field
+      chatDisplay.appendChild(messageElement);
+
+      textarea.value = ''; // Clear the textarea after sending
     } catch (error) {
       console.error('Error making API call:', error);
     }
   }
-</script>
+  }
+</script>	
 </body>
 </html>
