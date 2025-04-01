@@ -91,7 +91,6 @@
       <button id="clearInstructions">Clear Instructions</button>
       <input type="file" id="instructionsFileInput" accept=".txt" style="display: none;" />
     </div>
-
     <!-- Memory Log Section -->
     <div class="section">
       <h2>Memory Log</h2>
@@ -102,22 +101,17 @@
       <button id="clearMemoryLog">Clear Memory Log</button>
       <input type="file" id="memoryLogFileInput" accept=".json" style="display: none;" />
     </div>
-
     <!-- Status Area -->
     <div id="statusArea">Status messages will appear here...</div>
   </main>
   <script>
-    // Status Area Helper
     const statusArea = document.getElementById('statusArea');
     const updateStatus = (message, isError = false) => {
       statusArea.textContent = message;
       statusArea.style.color = isError ? 'red' : 'green';
     };
-
-    // System Instructions Logic
     const systemInstructions = document.getElementById('systemInstructions');
     const instructionsFileInput = document.getElementById('instructionsFileInput');
-
     document.getElementById('loadInstructions').addEventListener('click', () => instructionsFileInput.click());
     instructionsFileInput.addEventListener('change', (event) => {
       const file = event.target.files[0];
@@ -131,7 +125,6 @@
         reader.readAsText(file);
       }
     });
-
     document.getElementById('saveInstructions').addEventListener('click', () => {
       const blob = new Blob([systemInstructions.value], { type: 'text/plain' });
       const link = document.createElement('a');
@@ -140,16 +133,12 @@
       link.click();
       updateStatus('Instructions saved successfully.');
     });
-
     document.getElementById('clearInstructions').addEventListener('click', () => {
       systemInstructions.value = '';
       updateStatus('Instructions cleared.');
     });
-
-    // Memory Log Logic
     const memoryLog = document.getElementById('memoryLog');
     const memoryLogFileInput = document.getElementById('memoryLogFileInput');
-
     document.getElementById('loadMemoryLog').addEventListener('click', () => memoryLogFileInput.click());
     memoryLogFileInput.addEventListener('change', (event) => {
       const file = event.target.files[0];
@@ -163,10 +152,9 @@
         reader.readAsText(file);
       }
     });
-
     document.getElementById('saveMemoryLog').addEventListener('click', () => {
       try {
-        JSON.parse(memoryLog.value); // Validate JSON before saving
+        JSON.parse(memoryLog.value);
         const blob = new Blob([memoryLog.value], { type: 'application/json' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -177,7 +165,6 @@
         updateStatus('Invalid JSON. Cannot save memory log.', true);
       }
     });
-
     document.getElementById('validateMemoryLog').addEventListener('click', () => {
       try {
         JSON.parse(memoryLog.value);
@@ -186,7 +173,6 @@
         updateStatus('Invalid JSON.', true);
       }
     });
-
     document.getElementById('clearMemoryLog').addEventListener('click', () => {
       memoryLog.value = '';
       updateStatus('Memory log cleared.');
