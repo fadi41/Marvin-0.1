@@ -365,9 +365,9 @@
         else if (level === 'WARN') console.warn(message);
         else console.log(`[${level}] ${message}`);
 
-        if (!systemLogs) { 
+        if (!systemLogs) {
             console.error("SystemLogs element not found, cannot display log message in UI:", message);
-            return; 
+            return;
         }
         const timestamp = new Date().toLocaleTimeString();
         const logEntry = document.createElement('div');
@@ -443,6 +443,7 @@
               logAction('API config not found in localStorage.', 'WARN');
               throw new Error('API configuration not found. Please set it in Settings.');
           }
+          logAction(\`Raw config from localStorage: ${savedConfig.substring(0,200)}...\`, 'DEBUG');
           logAction('Parsing API config JSON.', 'DEBUG');
           const config = JSON.parse(savedConfig);
           // Use the specific keys saved by the updated settings page
@@ -455,14 +456,14 @@
               if (!apiKey) missing.push('API Key');
               if (!modelApiUrl) missing.push('Model API URL');
               logAction(`Config loaded but missing: ${missing.join(' and ')}`, 'WARN');
-              throw new Error(`${missing.join(' and ')} missing in configuration. Please check Settings.`);
+              throw new Error(`${missing.join(' and ')} missing in configuration. Please check Settings.\`);
           }
           // Log only last 4 chars of key for security
-          logAction(`API Key loaded (showing last 4): ****${apiKey.slice(-4)}`, 'INFO'); 
-          logAction(`API URL loaded: ${modelApiUrl}`, 'INFO');
+          logAction(\`API Key loaded (showing last 4): ****${apiKey.slice(-4)}\`, 'INFO'); 
+          logAction(\`API URL loaded: ${modelApiUrl}\`, 'INFO');
       } catch (error) {
-          logAction(`Configuration Error: ${error.message}`, 'ERROR');
-          addChatMessage('marvin', `Configuration Error: ${error.message}`);
+          logAction(\`Configuration Error: ${error.message}\`, 'ERROR');
+          addChatMessage('marvin', \`Configuration Error: ${error.message}\`);
           // Re-enable UI elements in case of config error
           chatInput.disabled = false;
           sendButton.disabled = false;
@@ -474,7 +475,7 @@
       // 2. Construct API Request URL and Body
       logAction('Constructing API request URL and body.', 'DEBUG');
       // Append the API key as a query parameter
-      const finalApiUrl = `${modelApiUrl}?key=${apiKey}`;
+      const finalApiUrl = \`${modelApiUrl}?key=${apiKey}\`;
       
       const requestBody = {
           contents: [
@@ -486,12 +487,12 @@
           ]
           // Add generationConfig or systemInstruction here if needed later
       };
-      logAction(`Request Body: ${JSON.stringify(requestBody).substring(0, 100)}...`, 'DEBUG');
+      logAction(\`Request Body: ${JSON.stringify(requestBody).substring(0, 100)}...\`, 'DEBUG');
 
       // 3. Make API Call
       try {
           // Don't log URL with key here for security
-          logAction(`Calling fetch to API endpoint...`, 'INFO'); 
+          logAction(\`Calling fetch to API endpoint...\`, 'INFO');
           const response = await fetch(finalApiUrl, {
               method: 'POST',
               headers: {
@@ -499,21 +500,21 @@
               },
               body: JSON.stringify(requestBody)
           });
-          logAction(`Fetch completed. Status: ${response.status}`, 'INFO');
+          logAction(\`Fetch completed. Status: ${response.status}\`, 'INFO');
 
           const responseBodyText = await response.text(); // Read body once
-          logAction(`Response Body (first 500 chars): ${responseBodyText.substring(0, 500)}...`, 'DEBUG');
+          logAction(\`Response Body (first 500 chars): ${responseBodyText.substring(0, 500)}...\`, 'DEBUG');
 
           if (!response.ok) {
-              let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+              let errorMessage = \`API Error: ${response.status} ${response.statusText}\`;
               let detailedError = responseBodyText;
               try {
                   const errorJson = JSON.parse(responseBodyText);
                   detailedError = errorJson.error?.message || JSON.stringify(errorJson.error) || responseBodyText;
               } catch (e) { /* Ignore parsing error, use raw text */ }
-              errorMessage += ` - ${detailedError}`;
-              logAction(`API Error Details: ${errorMessage}`, 'ERROR');
-              throw new Error(`API returned status ${response.status}. Check logs for details.`);
+              errorMessage += \` - ${detailedError}\`;
+              logAction(\`API Error Details: ${errorMessage}\`, 'ERROR');
+              throw new Error(\`API returned status ${response.status}. Check logs for details.\`);
           }
           
           logAction('Parsing successful API response body.', 'DEBUG');
@@ -524,21 +525,21 @@
           let marvinResponse = 'Error: Could not extract valid response text.';
           if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
               marvinResponse = data.candidates[0].content.parts[0].text;
-              logAction(`Marvin: "${marvinResponse.substring(0, 100)}${marvinResponse.length > 100 ? '...' : ''}"`, 'INFO');
+              logAction(\`Marvin: "${marvinResponse.substring(0, 100)}${marvinResponse.length > 100 ? '...' : ''}"\`, 'INFO');
           } else if (data.error) {
-              marvinResponse = `API Error: ${data.error.message || JSON.stringify(data.error)}`;
-              logAction(`API returned 200 OK but with error object: ${JSON.stringify(data.error)}`, 'ERROR');
+              marvinResponse = \`API Error: ${data.error.message || JSON.stringify(data.error)}\`;
+              logAction(\`API returned 200 OK but with error object: ${JSON.stringify(data.error)}\`, 'ERROR');
           } else {
-              logAction(`Unexpected API success response format.`, 'WARN');
+              logAction(\`Unexpected API success response format.\`, 'WARN');
               marvinResponse = 'Received an unexpected response format from the AI.';
           }
 
           addChatMessage('marvin', marvinResponse);
 
       } catch (error) {
-          console.error('sendMessage Error Details:', error); // Log full technical error to browser console
-          logAction(`API Call Failed: ${error.message || 'Unknown fetch error'}`, 'ERROR'); 
-          addChatMessage('marvin', `Sorry, I encountered an error. Please check the System Logs for details.`);
+          console.error('sendMessage Error Details:', error); // For browser console
+          logAction(\`API Call Failed: ${error.message || 'Unknown fetch error'}\`, 'ERROR');
+          addChatMessage('marvin', \`Sorry, I encountered an error. Please check the System Logs for details.\`);
       } finally {
           logAction('Running finally block: Re-enabling input and button.', 'DEBUG');
           chatInput.disabled = false;
