@@ -29,20 +29,19 @@
       display: flex;
       flex-direction: column;
     }
-    .container.navbar {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    /* Use .container class on header and main elements */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        width: 100%; /* Ensure container uses available width */
     }
-    main.container.main-content {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 1rem;
+    main.container {
+      margin-top: 2rem; /* Add space below header */
+      margin-bottom: 2rem; /* Add space above footer */
+      padding: 1rem; /* Padding inside main content area */
       display: flex;
-      flex: 1;
+      flex: 1; /* Allow main content to grow */
       gap: 1.5rem;
       flex-wrap: wrap; /* Allow cards to wrap */
     }
@@ -51,38 +50,42 @@
       color: white;
       padding: 1rem 0;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: sticky; /* Make header sticky */
+      top: 0;
+      z-index: 1000; /* Ensure header is above other content */
     }
     .navbar {
       display: flex;
       justify-content: space-between; /* Space out logo and nav */
       align-items: center;
-      width: 100%; /* Ensure navbar takes full width */
+      /* Removed width: 100% as .container handles width */
     }
-    .navbar ul {
+    .navbar .logo h1 {
+        margin: 0; /* Remove default margin */
+    }
+    nav ul {
       list-style: none;
       display: flex;
-      gap: 1rem;
+      gap: 0.5rem; /* Slightly reduce gap */
+      margin: 0; /* Remove default margin */
     }
-    .navbar ul li a {
+    nav ul li a {
         color: white;
         text-decoration: none;
-        padding: 0.5rem 1rem;
+        padding: 0.6rem 1rem; /* Adjust padding */
         border-radius: 5px;
         transition: var(--transition);
         display: block; /* Make the whole area clickable */
+        font-weight: 500; /* Slightly bolder */
     }
-    .navbar ul li a:hover {
+    nav ul li a:hover,
+    nav ul li.active a {
       background-color: rgba(255, 255, 255, 0.2);
     }
-    .navbar ul li.active a {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
+
     .main-content {
-      width: 100%;
-      display: flex;
-      flex: 1;
-      gap: 1.5rem;
-      justify-content: flex-start;
+        /* This selector might be redundant now, main.container is used */
+        /* Styles previously here are now in main.container */
       align-items: stretch; /* Make cards same height if wrapping */
     }
     .log-container {
@@ -94,6 +97,11 @@
       overflow-y: auto;
       font-family: monospace;
       flex-grow: 1; /* Allow log container to fill card */
+      font-size: 0.85em; /* Smaller font size for logs */
+    }
+    .log-container div {
+        margin-bottom: 4px; /* Space between log lines */
+        word-break: break-all; /* Prevent long log lines from overflowing */
     }
     .card {
       background-color: white;
@@ -111,10 +119,12 @@
     .card.chat-box {
       flex: 2 1 450px; /* Allow chat to take more space */
       min-width: 400px;
+      max-height: 70vh; /* Limit chatbox height */
     }
     .card.logs {
         flex: 1 1 300px; /* Logs card flex */
         min-width: 300px;
+        max-height: 70vh; /* Limit logs height */
     }
     .card-header {
       width: 100%;
@@ -126,11 +136,15 @@
       align-items: center;
       flex-shrink: 0;
     }
+    .card-header h2 {
+        margin: 0; /* Remove default margin */
+        font-size: 1.25rem; /* Adjust header size */
+    }
     .card-body {
       width: 100%;
       padding: 1rem;
       flex-grow: 1;
-      overflow-y: auto;
+      overflow-y: auto; /* Enable vertical scroll within card body */
       display: flex;
       flex-direction: column;
     }
@@ -159,16 +173,17 @@
         border-radius: 15px;
         max-width: 80%;
         word-wrap: break-word;
+        line-height: 1.4; /* Improve readability */
     }
     .user-message {
         background-color: var(--user-message-bg);
-        border-bottom-right-radius: 0;
+        border-bottom-right-radius: 3px;
         align-self: flex-end; /* Align user messages to the right */
         margin-left: auto; /* Push to right */
     }
     .marvin-message {
         background-color: var(--marvin-message-bg);
-        border-bottom-left-radius: 0;
+        border-bottom-left-radius: 3px;
         align-self: flex-start; /* Align Marvin messages to the left */
         margin-right: auto; /* Push to left */
     }
@@ -181,6 +196,8 @@
       gap: 0.5rem;
       flex-shrink: 0;
       align-items: flex-end; /* Align button with bottom of textarea */
+      padding-top: 0.5rem; /* Space above input area */
+      border-top: 1px solid #eee; /* Separator */
     }
     .chat-box textarea {
       flex-grow: 1; /* Let textarea grow */
@@ -192,6 +209,7 @@
       height: auto; /* Allow auto-height */
       max-height: 150px; /* Limit max height */
       overflow-y: auto; /* Add scroll if needed */
+      font-size: 1rem; /* Ensure consistent font size */
     }
     .chat-box button {
       padding: 0 1rem;
@@ -203,6 +221,8 @@
       transition: var(--transition);
       height: 40px; /* Fixed height */
       flex-shrink: 0;
+      font-size: 1rem;
+      font-weight: 600;
     }
     .chat-box button:hover {
         background-color: var(--secondary-color);
@@ -216,25 +236,25 @@
       padding: 1rem;
       background-color: var(--dark-color);
       color: white;
-      margin-top: 2rem;
+      margin-top: auto; /* Push footer to bottom */
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container navbar">
+  <header class="container">
+    <div class="navbar">
       <div class="logo">
         <h1>Marvin AI</h1>
       </div>
       <nav>
           <ul>
-            {/* Add active class dynamically later if needed */}
+            <!-- NOTE: Add 'active' class logic later if needed -->
             <li><a href="index.html">Dashboard</a></li>
             <li><a href="logs.html">Logs</a></li>
             <li><a href="settings.html">Settings</a></li>
             <li><a href="analytics.html">Analytics</a></li>
-            {/* Removed Help link for now, can add back */} 
-            {/* <li><a href="help.html">Help</a></li> */} 
+            <!-- Removed Help link for now, can add back -->
+            <!-- <li><a href="help.html">Help</a></li> -->
           </ul>
       </nav>
     </div>
@@ -246,7 +266,7 @@
         <h2>Marvin Development Console</h2>
       </div>
       <div class="card-body">
-        {/* Iframe loads main.html */} 
+        <!-- Iframe loads main.html -->
         <iframe src="main.html" title="Marvin Development Console"></iframe>
       </div>
     </div>
@@ -258,27 +278,25 @@
       <div class="card-body">
         <div id="chatDisplay"></div>
         <div class="chat-input-area">
-            <textarea id="chatInput" placeholder="Type your message here..."></textarea>
+            <textarea id="chatInput" placeholder="Type your message here..." rows="1"></textarea> <!-- Start with 1 row -->
             <button id="sendButton">Send</button>
         </div>
       </div>
     </div>
 
-    <div class="card logs"> {/* Added class for styling */} 
+    <div class="card logs">
       <div class="card-header">
           <h2>System Logs</h2>
       </div>
-      <div class="card-body"> {/* Added card-body for padding */} 
+      <div class="card-body">
         <div class="log-container" id="systemLogs">
-            [SYSTEM] Initializing AI control panel...<br>
-            [SYSTEM] Loading default configurations...<br>
-            [SYSTEM] System ready.<br>
+            <!-- Log entries will be added by JS -->
         </div>
       </div>
     </div>
   </main>
 
-  <footer>
+  <footer class="container">
     <p>© 2025 Marvin AI. All rights reserved.</p>
   </footer>
 
@@ -305,12 +323,17 @@
     document.addEventListener('DOMContentLoaded', () => {
       sendButton.addEventListener('click', sendMessage);
       logAction('Chat interface initialized.');
+      logAction('Initializing AI control panel...');
+      logAction('Loading default configurations...');
+      logAction('System ready.');
     });
 
     function logAction(message, level = 'INFO') {
       const timestamp = new Date().toLocaleTimeString();
       const logEntry = document.createElement('div');
-      logEntry.innerHTML = `[${timestamp}] [${level}] ${message}`;
+      // Basic escaping for HTML in logs
+      const escapedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      logEntry.innerHTML = `[${timestamp}] [${level}] ${escapedMessage}`;
       systemLogs.appendChild(logEntry);
       systemLogs.scrollTop = systemLogs.scrollHeight; // Auto-scroll
     }
@@ -321,11 +344,13 @@
         messageElement.classList.add('chat-message');
         if (sender === 'user') {
             messageElement.classList.add('user-message');
-            messageElement.textContent = message;
+            messageElement.textContent = message; // Use textContent for user messages (safer)
         } else { // sender === 'marvin'
             messageElement.classList.add('marvin-message');
-            // Simple formatting, assuming plain text response for now
-             messageElement.innerHTML = `<strong>Marvin:</strong> ${message.replace(/
+            // Use textContent for safety, then replace newlines with <br>
+            const safeMessage = document.createElement('div');
+            safeMessage.textContent = message;
+            messageElement.innerHTML = `<strong>Marvin:</strong> ${safeMessage.innerHTML.replace(/
 /g, '<br>')}`;
         }
         chatDisplay.appendChild(messageElement);
@@ -345,6 +370,7 @@
       logAction(`User message sent: "${message.substring(0, 50)}..."`);
       chatInput.value = ''; // Clear input
       chatInput.style.height = 'auto'; // Reset textarea height
+      chatInput.rows = 1; // Reset rows attribute if it was set
 
       // 1. Load configuration
       let apiKey = '';
@@ -388,7 +414,7 @@
 
       // 3. Make API Call
       try {
-          logAction(`Calling Gemini API: ${modelUrl}`);
+          logAction(`Calling Gemini API: ${modelUrl.split('?')[0]}`); // Log URL without key
           const response = await fetch(apiUrlWithKey, {
               method: 'POST',
               headers: {
@@ -397,21 +423,22 @@
               body: JSON.stringify(requestBody)
           });
 
+          const responseBodyText = await response.text(); // Read body once
+
           if (!response.ok) {
-              // Attempt to read error message from response body
-              let errorBody = await response.text(); // Read as text first
+              // Attempt to parse error message from response body
               let errorMessage = `API Error: ${response.status} ${response.statusText}`;
               try {
-                  const errorJson = JSON.parse(errorBody);
-                  errorMessage += ` - ${errorJson.error?.message || errorBody}`;
-              } catch (e) { 
-                  // If parsing fails, use the raw text body
-                  errorMessage += ` - ${errorBody}`; 
+                  const errorJson = JSON.parse(responseBodyText);
+                  errorMessage += ` - ${errorJson.error?.message || JSON.stringify(errorJson.error)}`;
+              } catch (e) {
+                  // If parsing fails, use the raw text body if it's not too long
+                  errorMessage += responseBodyText.length < 500 ? ` - ${responseBodyText}` : '';
               }
               throw new Error(errorMessage);
           }
 
-          const data = await response.json();
+          const data = JSON.parse(responseBodyText); // Parse the successful response
           logAction('Received response from Gemini API.');
 
           // 4. Extract response text (handle potential variations)
@@ -419,19 +446,19 @@
           if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
               marvinResponse = data.candidates[0].content.parts[0].text;
           } else if (data.error) {
-              // Handle cases where the API returns a JSON error object directly
+              // Handle cases where the API returns a JSON error object even with 200 OK (less common)
               marvinResponse = `API Error: ${data.error.message || JSON.stringify(data.error)}`;
               logAction(`API returned error object: ${JSON.stringify(data.error)}`, 'ERROR');
           } else {
-                logAction(`Unexpected API response format: ${JSON.stringify(data)}`, 'WARN');
+                logAction(`Unexpected API response format: ${responseBodyText.substring(0, 500)}...`, 'WARN');
           }
 
           addChatMessage('marvin', marvinResponse);
 
       } catch (error) {
-          console.error('Error during API call:', error);
+          console.error('Error during API call:', error); // Log full error to console
           logAction(`API Call Failed: ${error.message}`, 'ERROR');
-          addChatMessage('marvin', `Sorry, I encountered an error: ${error.message}`);
+          addChatMessage('marvin', `Sorry, I encountered an error processing your request.`); // More user-friendly message
       } finally {
           // Re-enable input and button regardless of success/failure
           chatInput.disabled = false;
