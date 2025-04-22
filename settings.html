@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marvin Settings</title> 
+  <title>Marvin Settings</title>
   <style>
     :root {
         --primary-color: #3a86ff;
@@ -31,10 +31,9 @@
       padding: 20px;
       flex-grow: 1; /* Allow container to fill space */
     }
-    /* Using header from index.html, removing duplicated nav/header here */
+    /* Using header from index.html */
     .control-panel {
       display: grid;
-      /* Adjusted grid for potentially more settings sections */
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: 20px;
       margin-top: 20px;
@@ -50,9 +49,11 @@
     }
     .card h2 {
         color: var(--primary-color);
+        margin-top: 0; /* Remove potential top margin */
         margin-bottom: 1rem;
         border-bottom: 2px solid var(--primary-color);
         padding-bottom: 0.5rem;
+        font-size: 1.25rem;
     }
     label {
         display: block; /* Ensure labels are on their own line */
@@ -121,6 +122,7 @@
       border-radius: 5px;
       border-left-width: 5px;
       border-left-style: solid;
+      font-size: 0.9em;
     }
     .status.success {
         background-color: #d4edda;
@@ -139,24 +141,28 @@
     }
 
     .button-group {
-        margin-top: 10px; /* Space above button group */
+        margin-top: auto; /* Push button group to bottom of card */
+        padding-top: 1rem; /* Add space above buttons */
         display: flex;
         flex-wrap: wrap; /* Allow buttons to wrap on small screens */
         gap: 10px;
     }
+    /* Ensure settings page title is visible */
+    h1 {
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
-  {/* Navigation should be handled by index.html */} 
-  {/* <header>...</header> - Removed */}
-  {/* <nav>...</nav> - Removed */} 
+  <!-- Navigation is handled by index.html -->
 
   <div class="container">
-     <h1>Marvin Settings</h1> {/* Main page title */} 
+     <h1>Marvin Settings</h1> <!-- Main page title -->
 
     <div class="control-panel">
 
-      {/* System Instructions Card */} 
+      <!-- System Instructions Card -->
        <div class="card">
           <h2>System Instructions</h2>
           <label for="systemInstructions">Edit Marvin's core instructions:</label>
@@ -164,13 +170,13 @@
           <div class="button-group">
             <button id="loadInstructionsBtn" class="secondary">Load from File</button>
             <button id="saveInstructionsBtn" class="primary">Save to File</button>
-            {/* Hidden file input */} 
+            <!-- Hidden file input -->
              <input type="file" id="instructionsFileInput" accept=".txt" style="display: none;" />
           </div>
           <div id="instructionsStatus" class="status info">Load or edit instructions.</div>
        </div>
 
-      {/* Configuration Settings Card */} 
+      <!-- Configuration Settings Card -->
        <div class="card">
         <h2>API Configuration</h2>
         <label for="api-key">Gemini API Key:</label>
@@ -178,19 +184,8 @@
 
         <label for="gemini-url">Gemini API URL:</label>
         <input type="text" id="gemini-url" placeholder="Enter Gemini API URL" value="https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent">
-        
-        {/* Removed less relevant settings for now, can be added back if needed */}
-        {/* <label for="temperature">Temperature:</label>
-        <div>
-           <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.7" oninput="updateTemperatureValue()">
-           <span id="temperature-value">0.7</span>
-        </div> 
-        <label for="max-tokens">Max Tokens:</label>
-        <input type="number" id="max-tokens" min="1" max="4096" value="1024">
-        <label for="endpoints">API Endpoints:</label> 
-        <select id="endpoints">
-          <option value="gemini" selected>Gemini API</option>
-        </select> */}
+
+        <!-- Removed less relevant settings for now -->
 
         <div class="button-group">
             <button onclick="saveApiConfiguration()" class="primary">Save API Config</button>
@@ -198,17 +193,22 @@
         <div id="configStatus" class="status info">API Configuration status.</div>
       </div>
 
-       {/* Placeholder for other settings cards like Memory Management */} 
-       {/* <div class="card">
+       <!-- Placeholder for other settings cards -->
+       <!-- <div class="card">
             <h2>Memory Management</h2>
-            </div> 
-       */}
+            <textarea placeholder="Memory log content here..."></textarea>
+            <div class="button-group">
+                <button class="secondary">Load Memory</button>
+                <button class="primary">Save Memory</button>
+            </div>
+            <div class="status info">Memory status.</div>
+         </div> -->
 
-    </div> {/* End control-panel */} 
-  </div> {/* End container */} 
+    </div> <!-- End control-panel -->
+  </div> <!-- End container -->
 
-  {/* Footer could be added back if this page is ever standalone */}
-  {/* <footer>...</footer> */}
+  <!-- Footer could be added back if this page is ever standalone -->
+  <!-- <footer>...</footer> -->
 
   <script>
     // DOM References
@@ -224,9 +224,6 @@
     // --- Configuration --- 
     function saveApiConfiguration() {
       const config = {
-        // temperature: document.getElementById('temperature').value,
-        // maxTokens: document.getElementById('max-tokens').value,
-        // endpoint: document.getElementById('endpoints').value,
         apiKey: apiKeyInput.value,
         geminiUrl: geminiUrlInput.value
       };
@@ -253,10 +250,6 @@
                 const config = JSON.parse(savedConfig);
                 apiKeyInput.value = config.apiKey || '';
                 geminiUrlInput.value = config.geminiUrl || 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
-                // document.getElementById('temperature').value = config.temperature || 0.7;
-                // updateTemperatureValue();
-                // document.getElementById('max-tokens').value = config.maxTokens || 1024;
-                // document.getElementById('endpoints').value = config.endpoint || 'gemini';
                 updateStatus(configStatusDiv, 'Loaded saved API configuration.', 'info');
             } catch (error) {
                  updateStatus(configStatusDiv, `Error loading API config: ${error.message}`, 'error');
@@ -265,11 +258,6 @@
              updateStatus(configStatusDiv, 'No saved API configuration found. Please enter details.', 'info');
         }
     }
-
-    // function updateTemperatureValue() {
-    //   const temp = document.getElementById('temperature').value;
-    //   document.getElementById('temperature-value').textContent = temp;
-    // }
 
     // --- System Instructions --- 
     loadInstructionsBtn.addEventListener('click', () => instructionsFileInput.click());
@@ -281,8 +269,7 @@
             reader.onload = (e) => {
                 systemInstructionsTextarea.value = e.target.result;
                 updateStatus(instructionsStatusDiv, `Loaded instructions from ${file.name}.`, 'success');
-                // Reset file input to allow loading the same file again if needed
-                instructionsFileInput.value = null;
+                instructionsFileInput.value = null; // Reset file input
             };
             reader.onerror = (e) => {
                 updateStatus(instructionsStatusDiv, 'Error reading instructions file.', 'error');
@@ -301,10 +288,7 @@
             updateStatus(instructionsStatusDiv, 'Cannot save empty instructions.', 'error');
             return;
         }
-        // Note: This saves via browser download. 
-        // To save directly to the server filesystem (e.g., 'Files/System Instructions v0.6.txt'),
-        // we would need a backend endpoint or use the write_file tool if appropriate 
-        // in the final implementation context.
+        // Saves via browser download
         const blob = new Blob([instructionsText], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
@@ -326,19 +310,20 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadApiConfiguration();
         updateStatus(instructionsStatusDiv, 'Load instructions from a file or edit directly.', 'info');
-        // Potentially load existing instructions from a default file on load?
-        // loadDefaultInstructions(); 
+        // loadDefaultInstructions(); // Consider adding this back
     });
 
-    // Placeholder for loading default instructions on page load (e.g., from a known file path)
+    // Placeholder for loading default instructions on page load
     // async function loadDefaultInstructions() {
     //    try {
-    //        // Use read_file tool or fetch API 
-    //        // const defaultInstructions = await readFileTool('Files/System iNStructions Marvin 0.6.txt'); 
-    //        // systemInstructionsTextarea.value = defaultInstructions;
+    //        // Example: Fetching from a specific file
+    //        // const response = await fetch('Files/System iNStructions Marvin 0.6.txt');
+    //        // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    //        // const text = await response.text();
+    //        // systemInstructionsTextarea.value = text;
     //        // updateStatus(instructionsStatusDiv, 'Loaded default instructions.', 'info');
     //    } catch (error) {
-    //         updateStatus(instructionsStatusDiv, 'Could not load default instructions.', 'error');
+    //         updateStatus(instructionsStatusDiv, `Could not load default instructions: ${error.message}`, 'error');
     //    }
     // }
 
