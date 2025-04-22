@@ -316,39 +316,59 @@
 
     if (!chatDisplay || !chatInput || !sendButton || !systemLogs) {
         console.error("Critical Error: Chat UI elements not found!");
+        // Attempt to log even if systemLogs might be null
+        logAction('Critical Error: Chat UI elements not found! Check element IDs.', 'ERROR');
         alert("Chat interface failed to initialize. Check console (F12) for errors.");
     }
 
     // Add listener for Enter key in textarea
-    chatInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); // Prevent new line on Enter
-            sendMessage();
-        }
-    });
+    if (chatInput) {
+        chatInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault(); // Prevent new line on Enter
+                if (sendButton && !sendButton.disabled) { // Only send if button is enabled
+                    sendMessage();
+                }
+            }
+        });
+        
+        // Auto-resize textarea
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto'; // Reset height
+            // Use scrollHeight to set the height, respecting max-height via CSS
+            const maxHeight = parseInt(window.getComputedStyle(this).maxHeight) || 150;
+            this.style.height = Math.min(this.scrollHeight, maxHeight) + 'px';
+        });
+    } else {
+        logAction('Chat input element not found.', 'ERROR');
+    }
 
-    // Auto-resize textarea
-    chatInput.addEventListener('input', function() {
-        this.style.height = 'auto'; // Reset height
-        // Use scrollHeight to set the height, respecting max-height via CSS
-        this.style.height = Math.min(this.scrollHeight, parseInt(window.getComputedStyle(this).maxHeight)) + 'px';
-    });
 
     document.addEventListener('DOMContentLoaded', () => {
+        logAction('DOMContentLoaded event fired.', 'DEBUG');
         // Ensure event listener is attached ONLY if sendButton exists
         if (sendButton) {
+            logAction('Send button found, attaching click listener.', 'DEBUG');
             sendButton.addEventListener('click', sendMessage);
-            logAction('Chat interface initialized.');
-            logAction('Initializing AI control panel...');
-            logAction('Loading default configurations...');
-            logAction('System ready.');
+            logAction('Chat interface initialized.', 'INFO');
+            logAction('Initializing AI control panel...', 'INFO');
+            logAction('Loading default configurations...', 'INFO');
+            logAction('System ready.', 'INFO');
         } else {
             logAction('Error: Send button not found during initialization.', 'ERROR');
         }
     });
 
     function logAction(message, level = 'INFO') {
-        if (!systemLogs) return; // Don't try to log if the element doesn't exist
+        // Add console logging as well for easier debugging
+        if (level === 'ERROR') console.error(message);
+        else if (level === 'WARN') console.warn(message);
+        else console.log(`[${level}] ${message}`);
+
+        if (!systemLogs) { 
+            console.error("SystemLogs element not found, cannot display log message in UI:", message);
+            return; 
+        }
         const timestamp = new Date().toLocaleTimeString();
         const logEntry = document.createElement('div');
         // Basic escaping for HTML in logs
@@ -357,9 +377,13 @@
         // Add color based on level (optional)
         if (level === 'ERROR') logEntry.style.color = '#ff7b7b';
         if (level === 'WARN') logEntry.style.color = '#ffdd7b';
+        if (level === 'DEBUG') logEntry.style.color = '#aaa'; // Gray for debug
 
         systemLogs.appendChild(logEntry);
-        systemLogs.scrollTop = systemLogs.scrollHeight; // Auto-scroll
+        // Only scroll if the user isn't scrolled up
+        if (systemLogs.scrollHeight - systemLogs.scrollTop <= systemLogs.clientHeight + 50) {
+             systemLogs.scrollTop = systemLogs.scrollHeight;
+        }
     }
 
     // Function to add messages to the chat display
@@ -383,6 +407,7 @@
     }
 
     async function sendMessage() {
+      logAction('sendMessage function called.', 'DEBUG');
       // Ensure elements exist before proceeding
       if (!chatInput || !sendButton) {
           logAction("sendMessage failed: chat input or send button not found.", 'ERROR');
@@ -390,15 +415,20 @@
       }
 
       const message = chatInput.value.trim();
-      if (!message) return;
-
+      logAction(`Message text: "${message.substring(0, 30)}..."`, 'DEBUG');
+      if (!message) {
+          logAction('Message is empty, exiting sendMessage.', 'DEBUG');
+          return;
+      }
+      
+      logAction('Disabling input and button.', 'DEBUG');
       // Disable input and button while processing
       chatInput.disabled = true;
       sendButton.disabled = true;
       sendButton.textContent = '...'; // Indicate processing
 
       addChatMessage('user', message); // Display user message immediately
-      logAction(`User: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"`); // Log user message
+      logAction(`User: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"`, 'INFO'); // Log user message
       chatInput.value = ''; // Clear input
       chatInput.style.height = 'auto'; // Reset textarea height
       chatInput.rows = 1; // Reset rows attribute if it was set
@@ -407,10 +437,13 @@
       let apiKey = '';
       let modelApiUrl = ''; // Renamed from modelUrl for clarity
       try {
+          logAction('Attempting to load API config from localStorage.', 'DEBUG');
           const savedConfig = localStorage.getItem('marvin-api-config');
           if (!savedConfig) {
+              logAction('API config not found in localStorage.', 'WARN');
               throw new Error('API configuration not found. Please set it in Settings.');
           }
+          logAction('Parsing API config JSON.', 'DEBUG');
           const config = JSON.parse(savedConfig);
           // Use the specific keys saved by the updated settings page
           apiKey = config.apiKey;
@@ -421,10 +454,12 @@
               let missing = [];
               if (!apiKey) missing.push('API Key');
               if (!modelApiUrl) missing.push('Model API URL');
+              logAction(`Config loaded but missing: ${missing.join(' and ')}`, 'WARN');
               throw new Error(`${missing.join(' and ')} missing in configuration. Please check Settings.`);
           }
-          logAction(`Using API Key: ****${apiKey.slice(-4)}`, 'INFO'); // Log only last 4 chars of key
-          logAction(`Using API URL: ${modelApiUrl}`, 'INFO');
+          // Log only last 4 chars of key for security
+          logAction(`API Key loaded (showing last 4): ****${apiKey.slice(-4)}`, 'INFO'); 
+          logAction(`API URL loaded: ${modelApiUrl}`, 'INFO');
       } catch (error) {
           logAction(`Configuration Error: ${error.message}`, 'ERROR');
           addChatMessage('marvin', `Configuration Error: ${error.message}`);
@@ -432,10 +467,12 @@
           chatInput.disabled = false;
           sendButton.disabled = false;
           sendButton.textContent = 'Send';
+          logAction('sendMessage exited due to config error.', 'DEBUG');
           return; // Stop if config is bad
       }
 
       // 2. Construct API Request URL and Body
+      logAction('Constructing API request URL and body.', 'DEBUG');
       // Append the API key as a query parameter
       const finalApiUrl = `${modelApiUrl}?key=${apiKey}`;
       
@@ -449,10 +486,12 @@
           ]
           // Add generationConfig or systemInstruction here if needed later
       };
+      logAction(`Request Body: ${JSON.stringify(requestBody).substring(0, 100)}...`, 'DEBUG');
 
       // 3. Make API Call
       try {
-          logAction(`Calling Gemini API...`, 'INFO'); // Don't log URL with key here
+          // Don't log URL with key here for security
+          logAction(`Calling fetch to API endpoint...`, 'INFO'); 
           const response = await fetch(finalApiUrl, {
               method: 'POST',
               headers: {
@@ -460,9 +499,10 @@
               },
               body: JSON.stringify(requestBody)
           });
+          logAction(`Fetch completed. Status: ${response.status}`, 'INFO');
 
           const responseBodyText = await response.text(); // Read body once
-          logAction(`API response status: ${response.status}`, 'INFO');
+          logAction(`Response Body (first 500 chars): ${responseBodyText.substring(0, 500)}...`, 'DEBUG');
 
           if (!response.ok) {
               let errorMessage = `API Error: ${response.status} ${response.statusText}`;
@@ -472,37 +512,40 @@
                   detailedError = errorJson.error?.message || JSON.stringify(errorJson.error) || responseBodyText;
               } catch (e) { /* Ignore parsing error, use raw text */ }
               errorMessage += ` - ${detailedError}`;
-              logAction(`API Error Details: ${errorMessage.substring(0, 500)}${errorMessage.length > 500 ? '...' : ''}`, 'ERROR');
+              logAction(`API Error Details: ${errorMessage}`, 'ERROR');
               throw new Error(`API returned status ${response.status}. Check logs for details.`);
           }
           
-          const data = JSON.parse(responseBodyText);
-          logAction('Successfully parsed API response.', 'INFO');
+          logAction('Parsing successful API response body.', 'DEBUG');
+          const data = JSON.parse(responseBodyText); 
 
           // 4. Extract response text
+          logAction('Extracting response text from JSON.', 'DEBUG');
           let marvinResponse = 'Error: Could not extract valid response text.';
           if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
               marvinResponse = data.candidates[0].content.parts[0].text;
-              logAction(`Marvin: "${marvinResponse.substring(0, 100)}${marvinResponse.length > 100 ? '...' : ''}"`);
+              logAction(`Marvin: "${marvinResponse.substring(0, 100)}${marvinResponse.length > 100 ? '...' : ''}"`, 'INFO');
           } else if (data.error) {
               marvinResponse = `API Error: ${data.error.message || JSON.stringify(data.error)}`;
               logAction(`API returned 200 OK but with error object: ${JSON.stringify(data.error)}`, 'ERROR');
           } else {
-              logAction(`Unexpected API success response format: ${responseBodyText.substring(0, 500)}...`, 'WARN');
+              logAction(`Unexpected API success response format.`, 'WARN');
               marvinResponse = 'Received an unexpected response format from the AI.';
           }
 
           addChatMessage('marvin', marvinResponse);
 
       } catch (error) {
-          console.error('sendMessage Error:', error);
-          logAction(`API Call Failed: ${error.message || 'Unknown fetch error'}`, 'ERROR');
+          console.error('sendMessage Error Details:', error); // Log full technical error to browser console
+          logAction(`API Call Failed: ${error.message || 'Unknown fetch error'}`, 'ERROR'); 
           addChatMessage('marvin', `Sorry, I encountered an error. Please check the System Logs for details.`);
       } finally {
+          logAction('Running finally block: Re-enabling input and button.', 'DEBUG');
           chatInput.disabled = false;
           sendButton.disabled = false;
           sendButton.textContent = 'Send';
           chatInput.focus();
+          logAction('sendMessage finished.', 'DEBUG');
       }
     }
   </script>
