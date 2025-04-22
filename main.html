@@ -20,52 +20,39 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     body {
-      background-color: #f0f2f5;
+      background-color: #f0f2f5; /* Match index.html background */
       color: var(--dark-color);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1rem; /* Add gap between sections */
+      padding: 1rem; /* Add padding to body */
     }
-    header {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
+    /* Removed header styling as it's less relevant inside an iframe */
     main {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      padding: 1rem;
+      flex: 1; /* Allow main to grow */
     }
     .section {
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      padding: 1rem;
+      padding: 1.5rem; /* Increased padding */
     }
-    textarea {
-      width: 100%;
-      height: 200px;
-      font-family: monospace;
-      font-size: 1rem;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+    .section h2 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 0.5rem;
     }
-    button {
-      margin: 0.5rem 0;
-      padding: 0.5rem 1rem;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    button:hover {
-      background-color: var(--secondary-color);
+     .section p {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+     }
+    .section strong {
+        color: var(--secondary-color);
     }
     #statusArea {
       margin-top: 1rem;
@@ -73,110 +60,95 @@
       background-color: #e9ecef;
       border-radius: 5px;
       font-size: 0.9rem;
+      border-left: 5px solid var(--primary-color);
     }
+     /* Basic button styling if needed */
+     button {
+        margin: 0.5rem 0.5rem 0.5rem 0; /* Added right margin */
+        padding: 0.6rem 1.2rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+     }
+     button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px); /* Slight lift effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Marvin Development Console</h1>
-    <p>Manage Marvin's System Instructions and Memory Log</p>
-  </header>
   <main>
-    <!-- System Instructions Section -->
+    <!-- Marvin Overview Section -->
     <div class="section">
-      <h2>System Instructions</h2>
-      <textarea id="systemInstructions" placeholder="Edit Marvin's system instructions here..."></textarea>
-      <button id="loadInstructions">Load Instructions (.txt)</button>
-      <button id="saveInstructions">Save Instructions (.txt)</button>
-      <button id="clearInstructions">Clear Instructions</button>
-      <input type="file" id="instructionsFileInput" accept=".txt" style="display: none;" />
+      <h2>Marvin Overview</h2>
+      <p><strong>Version:</strong> <span id="marvinVersion">0.6</span></p>
+      <p><strong>Status:</strong> <span id="marvinStatus" style="color: green;">Operational</span></p>
+      <p>This console provides tools to manage and interact with Marvin.</p>
+      <p>Use the navigation links above (in the main header) or specific sections within pages like Settings to manage Marvin's configuration.</p>
+       {/* Placeholder for future actions or links */}
+       {/* <button>Quick Action 1</button> */}
+       {/* <button>Quick Action 2</button> */}
     </div>
-    <!-- Memory Log Section -->
+
+    {/* Placeholder for other console elements if needed */}
     <div class="section">
-      <h2>Memory Log</h2>
-      <textarea id="memoryLog" placeholder="Edit Marvin's memory log (JSON format) here..."></textarea>
-      <button id="loadMemoryLog">Load Memory Log (.json)</button>
-      <button id="saveMemoryLog">Save Memory Log (.json)</button>
-      <button id="validateMemoryLog">Validate JSON</button>
-      <button id="clearMemoryLog">Clear Memory Log</button>
-      <input type="file" id="memoryLogFileInput" accept=".json" style="display: none;" />
+        <h2>Console Output / Interaction</h2>
+        {/* This could be a log display, command input, etc. later */}
+        <div id="consoleOutput" style="height: 150px; background: #eee; border-radius: 5px; padding: 10px; overflow-y: auto; font-family: monospace;">
+            Console initialized...<br>
+        </div>
     </div>
+
     <!-- Status Area -->
     <div id="statusArea">Status messages will appear here...</div>
   </main>
+
   <script>
     const statusArea = document.getElementById('statusArea');
+    const consoleOutput = document.getElementById('consoleOutput');
+
+    // Function to update the status message bar
     const updateStatus = (message, isError = false) => {
       statusArea.textContent = message;
-      statusArea.style.color = isError ? 'red' : 'green';
+      statusArea.style.color = isError ? '#dc3545' : '#28a745'; // Red for error, Green for success
+       statusArea.style.borderColor = isError ? '#dc3545' : '#28a745';
     };
-    const systemInstructions = document.getElementById('systemInstructions');
-    const instructionsFileInput = document.getElementById('instructionsFileInput');
-    document.getElementById('loadInstructions').addEventListener('click', () => instructionsFileInput.click());
-    instructionsFileInput.addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          systemInstructions.value = reader.result;
-          updateStatus('Instructions loaded successfully.');
-        };
-        reader.onerror = () => updateStatus('Error reading instructions file.', true);
-        reader.readAsText(file);
-      }
+
+    // Function to log messages to the mini console output area
+    const logToConsole = (message) => {
+        const timestamp = new Date().toLocaleTimeString();
+        consoleOutput.innerHTML += `[${timestamp}] ${message}<br>`;
+        consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll
+    }
+
+    // Example of updating status and logging on load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateStatus('Marvin Development Console loaded.');
+        logToConsole('Overview panel ready.');
+        // Later, fetch actual version/status dynamically
+        // fetchMarvinState();
     });
-    document.getElementById('saveInstructions').addEventListener('click', () => {
-      const blob = new Blob([systemInstructions.value], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'marvin_instructions.txt';
-      link.click();
-      updateStatus('Instructions saved successfully.');
-    });
-    document.getElementById('clearInstructions').addEventListener('click', () => {
-      systemInstructions.value = '';
-      updateStatus('Instructions cleared.');
-    });
-    const memoryLog = document.getElementById('memoryLog');
-    const memoryLogFileInput = document.getElementById('memoryLogFileInput');
-    document.getElementById('loadMemoryLog').addEventListener('click', () => memoryLogFileInput.click());
-    memoryLogFileInput.addEventListener('change', (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          memoryLog.value = reader.result;
-          updateStatus('Memory log loaded successfully.');
-        };
-        reader.onerror = () => updateStatus('Error reading memory log file.', true);
-        reader.readAsText(file);
-      }
-    });
-    document.getElementById('saveMemoryLog').addEventListener('click', () => {
-      try {
-        JSON.parse(memoryLog.value);
-        const blob = new Blob([memoryLog.value], { type: 'application/json' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'marvin_memory_log.json';
-        link.click();
-        updateStatus('Memory log saved successfully.');
-      } catch (error) {
-        updateStatus('Invalid JSON. Cannot save memory log.', true);
-      }
-    });
-    document.getElementById('validateMemoryLog').addEventListener('click', () => {
-      try {
-        JSON.parse(memoryLog.value);
-        updateStatus('JSON is valid.');
-      } catch (error) {
-        updateStatus('Invalid JSON.', true);
-      }
-    });
-    document.getElementById('clearMemoryLog').addEventListener('click', () => {
-      memoryLog.value = '';
-      updateStatus('Memory log cleared.');
-    });
+
+    // Placeholder for function to fetch Marvin's state
+    // async function fetchMarvinState() {
+    //    try {
+    //        // const response = await fetch('/api/marvin/status'); // Example API call
+    //        // const data = await response.json();
+    //        // document.getElementById('marvinVersion').textContent = data.version;
+    //        // document.getElementById('marvinStatus').textContent = data.status;
+    //        logToConsole('Fetched Marvin state.');
+    //        updateStatus('Marvin state updated.');
+    //    } catch (error) {
+    //        logToConsole(`Error fetching Marvin state: ${error}`);
+    //        updateStatus('Failed to fetch Marvin state.', true);
+    //    }
+    // }
+
   </script>
 </body>
 </html>
