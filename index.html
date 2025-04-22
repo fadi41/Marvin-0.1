@@ -32,14 +32,17 @@
     /* Use .container class on header and main elements */
     .container {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
         width: 100%; /* Ensure container uses available width */
     }
     main.container {
-      margin-top: 2rem; /* Add space below header */
+      margin-top: 1rem; /* Reduced space below header */
       margin-bottom: 2rem; /* Add space above footer */
-      padding: 1rem; /* Padding inside main content area */
+      padding-top: 1rem; /* Padding inside main content area */
+      padding-bottom: 1rem;
       display: flex;
       flex: 1; /* Allow main content to grow */
       gap: 1.5rem;
@@ -48,7 +51,8 @@
     header {
       background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
       color: white;
-      padding: 1rem 0;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       position: sticky; /* Make header sticky */
       top: 0;
@@ -58,16 +62,21 @@
       display: flex;
       justify-content: space-between; /* Space out logo and nav */
       align-items: center;
-      /* Removed width: 100% as .container handles width */
+      min-height: 50px; /* Ensure header has some height */
     }
     .navbar .logo h1 {
-        margin: 0; /* Remove default margin */
+        margin: 0;
+        font-size: 1.75rem;
     }
     nav ul {
       list-style: none;
       display: flex;
       gap: 0.5rem; /* Slightly reduce gap */
       margin: 0; /* Remove default margin */
+      padding: 0; /* Remove default padding */
+    }
+    nav ul li {
+        display: inline-block; /* Ensure list items flow horizontally */
     }
     nav ul li a {
         color: white;
@@ -84,8 +93,7 @@
     }
 
     .main-content {
-        /* This selector might be redundant now, main.container is used */
-        /* Styles previously here are now in main.container */
+        /* This class is on the main tag, combined with .container */
       align-items: stretch; /* Make cards same height if wrapping */
     }
     .log-container {
@@ -93,7 +101,7 @@
       color: #ecf0f1;
       padding: 15px;
       border-radius: 8px;
-      max-height: 300px;
+      /* max-height: 300px; */ /* Removed max-height, let card control it */
       overflow-y: auto;
       font-family: monospace;
       flex-grow: 1; /* Allow log container to fill card */
@@ -107,7 +115,7 @@
       background-color: white;
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
+      overflow: hidden; /* Prevent content overflow */
       transition: var(--transition);
       display: flex;
       flex-direction: column;
@@ -119,12 +127,12 @@
     .card.chat-box {
       flex: 2 1 450px; /* Allow chat to take more space */
       min-width: 400px;
-      max-height: 70vh; /* Limit chatbox height */
+      max-height: calc(100vh - 10rem); /* Limit chatbox height relative to viewport */
     }
     .card.logs {
         flex: 1 1 300px; /* Logs card flex */
         min-width: 300px;
-        max-height: 70vh; /* Limit logs height */
+        max-height: calc(100vh - 10rem); /* Limit logs height relative to viewport */
     }
     .card-header {
       width: 100%;
@@ -237,6 +245,7 @@
       background-color: var(--dark-color);
       color: white;
       margin-top: auto; /* Push footer to bottom */
+      flex-shrink: 0; /* Prevent footer from shrinking */
     }
   </style>
 </head>
@@ -248,13 +257,11 @@
       </div>
       <nav>
           <ul>
-            <!-- NOTE: Add 'active' class logic later if needed -->
-            <li><a href="index.html">Dashboard</a></li>
+            <!-- Navigation Links - Add 'active' class to Dashboard -->
+            <li class="active"><a href="index.html">Dashboard</a></li>
             <li><a href="logs.html">Logs</a></li>
             <li><a href="settings.html">Settings</a></li>
             <li><a href="analytics.html">Analytics</a></li>
-            <!-- Removed Help link for now, can add back -->
-            <!-- <li><a href="help.html">Help</a></li> -->
           </ul>
       </nav>
     </div>
@@ -278,7 +285,7 @@
       <div class="card-body">
         <div id="chatDisplay"></div>
         <div class="chat-input-area">
-            <textarea id="chatInput" placeholder="Type your message here..." rows="1"></textarea> <!-- Start with 1 row -->
+            <textarea id="chatInput" placeholder="Type your message here..." rows="1"></textarea>
             <button id="sendButton">Send</button>
         </div>
       </div>
@@ -301,10 +308,16 @@
   </footer>
 
   <script>
+    // Ensure DOM elements are found correctly
     const chatDisplay = document.getElementById('chatDisplay');
     const chatInput = document.getElementById('chatInput');
     const sendButton = document.getElementById('sendButton');
     const systemLogs = document.getElementById('systemLogs');
+
+    if (!chatDisplay || !chatInput || !sendButton || !systemLogs) {
+        console.error("Critical Error: Chat UI elements not found!");
+        alert("Chat interface failed to initialize. Check console (F12) for errors.");
+    }
 
     // Add listener for Enter key in textarea
     chatInput.addEventListener('keypress', function(event) {
@@ -317,29 +330,41 @@
     // Auto-resize textarea
     chatInput.addEventListener('input', function() {
         this.style.height = 'auto'; // Reset height
-        this.style.height = (this.scrollHeight) + 'px'; // Set to scroll height
+        // Use scrollHeight to set the height, respecting max-height via CSS
+        this.style.height = Math.min(this.scrollHeight, parseInt(window.getComputedStyle(this).maxHeight)) + 'px';
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-      sendButton.addEventListener('click', sendMessage);
-      logAction('Chat interface initialized.');
-      logAction('Initializing AI control panel...');
-      logAction('Loading default configurations...');
-      logAction('System ready.');
+        // Ensure event listener is attached ONLY if sendButton exists
+        if (sendButton) {
+            sendButton.addEventListener('click', sendMessage);
+            logAction('Chat interface initialized.');
+            logAction('Initializing AI control panel...');
+            logAction('Loading default configurations...');
+            logAction('System ready.');
+        } else {
+            logAction('Error: Send button not found during initialization.', 'ERROR');
+        }
     });
 
     function logAction(message, level = 'INFO') {
-      const timestamp = new Date().toLocaleTimeString();
-      const logEntry = document.createElement('div');
-      // Basic escaping for HTML in logs
-      const escapedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      logEntry.innerHTML = `[${timestamp}] [${level}] ${escapedMessage}`;
-      systemLogs.appendChild(logEntry);
-      systemLogs.scrollTop = systemLogs.scrollHeight; // Auto-scroll
+        if (!systemLogs) return; // Don't try to log if the element doesn't exist
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = document.createElement('div');
+        // Basic escaping for HTML in logs
+        const escapedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        logEntry.innerHTML = `[${timestamp}] [${level}] ${escapedMessage}`;
+        // Add color based on level (optional)
+        if (level === 'ERROR') logEntry.style.color = '#ff7b7b';
+        if (level === 'WARN') logEntry.style.color = '#ffdd7b';
+
+        systemLogs.appendChild(logEntry);
+        systemLogs.scrollTop = systemLogs.scrollHeight; // Auto-scroll
     }
 
     // Function to add messages to the chat display
     function addChatMessage(sender, message) {
+        if (!chatDisplay) return; // Don't try if element doesn't exist
         const messageElement = document.createElement('div');
         messageElement.classList.add('chat-message');
         if (sender === 'user') {
@@ -349,7 +374,7 @@
             messageElement.classList.add('marvin-message');
             // Use textContent for safety, then replace newlines with <br>
             const safeMessage = document.createElement('div');
-            safeMessage.textContent = message;
+            safeMessage.textContent = message; // Assign raw text
             messageElement.innerHTML = `<strong>Marvin:</strong> ${safeMessage.innerHTML.replace(/
 /g, '<br>')}`;
         }
@@ -358,6 +383,12 @@
     }
 
     async function sendMessage() {
+      // Ensure elements exist before proceeding
+      if (!chatInput || !sendButton) {
+          logAction("sendMessage failed: chat input or send button not found.", 'ERROR');
+          return;
+      }
+
       const message = chatInput.value.trim();
       if (!message) return;
 
@@ -367,36 +398,47 @@
       sendButton.textContent = '...'; // Indicate processing
 
       addChatMessage('user', message); // Display user message immediately
-      logAction(`User message sent: "${message.substring(0, 50)}..."`);
+      logAction(`User: "${message.substring(0, 100)}${message.length > 100 ? '...' : ''}"`); // Log user message
       chatInput.value = ''; // Clear input
       chatInput.style.height = 'auto'; // Reset textarea height
       chatInput.rows = 1; // Reset rows attribute if it was set
 
       // 1. Load configuration
       let apiKey = '';
-      let modelUrl = '';
+      let modelApiUrl = ''; // Renamed from modelUrl for clarity
       try {
           const savedConfig = localStorage.getItem('marvin-api-config');
           if (!savedConfig) {
               throw new Error('API configuration not found. Please set it in Settings.');
           }
           const config = JSON.parse(savedConfig);
+          // Use the specific keys saved by the updated settings page
           apiKey = config.apiKey;
-          modelUrl = config.geminiUrl;
-          if (!apiKey || !modelUrl) {
-              throw new Error('API Key or Model URL missing in configuration. Please check Settings.');
+          modelApiUrl = config.apiUrl; // Use the saved apiUrl
+          
+          if (!apiKey || !modelApiUrl) {
+              // Construct a more informative error message
+              let missing = [];
+              if (!apiKey) missing.push('API Key');
+              if (!modelApiUrl) missing.push('Model API URL');
+              throw new Error(`${missing.join(' and ')} missing in configuration. Please check Settings.`);
           }
+          logAction(`Using API Key: ****${apiKey.slice(-4)}`, 'INFO'); // Log only last 4 chars of key
+          logAction(`Using API URL: ${modelApiUrl}`, 'INFO');
       } catch (error) {
           logAction(`Configuration Error: ${error.message}`, 'ERROR');
           addChatMessage('marvin', `Configuration Error: ${error.message}`);
+          // Re-enable UI elements in case of config error
           chatInput.disabled = false;
           sendButton.disabled = false;
-           sendButton.textContent = 'Send';
+          sendButton.textContent = 'Send';
           return; // Stop if config is bad
       }
 
       // 2. Construct API Request URL and Body
-      const apiUrlWithKey = `${modelUrl}?key=${apiKey}`;
+      // Append the API key as a query parameter
+      const finalApiUrl = `${modelApiUrl}?key=${apiKey}`;
+      
       const requestBody = {
           contents: [
               {
@@ -405,17 +447,13 @@
                   ]
               }
           ]
-          // Add generationConfig here if needed (temperature, maxTokens etc.)
-          // "generationConfig": {
-          //   "temperature": 0.7,
-          //   "maxOutputTokens": 1024
-          // }
+          // Add generationConfig or systemInstruction here if needed later
       };
 
       // 3. Make API Call
       try {
-          logAction(`Calling Gemini API: ${modelUrl.split('?')[0]}`); // Log URL without key
-          const response = await fetch(apiUrlWithKey, {
+          logAction(`Calling Gemini API...`, 'INFO'); // Don't log URL with key here
+          const response = await fetch(finalApiUrl, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -424,47 +462,47 @@
           });
 
           const responseBodyText = await response.text(); // Read body once
+          logAction(`API response status: ${response.status}`, 'INFO');
 
           if (!response.ok) {
-              // Attempt to parse error message from response body
               let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+              let detailedError = responseBodyText;
               try {
                   const errorJson = JSON.parse(responseBodyText);
-                  errorMessage += ` - ${errorJson.error?.message || JSON.stringify(errorJson.error)}`;
-              } catch (e) {
-                  // If parsing fails, use the raw text body if it's not too long
-                  errorMessage += responseBodyText.length < 500 ? ` - ${responseBodyText}` : '';
-              }
-              throw new Error(errorMessage);
+                  detailedError = errorJson.error?.message || JSON.stringify(errorJson.error) || responseBodyText;
+              } catch (e) { /* Ignore parsing error, use raw text */ }
+              errorMessage += ` - ${detailedError}`;
+              logAction(`API Error Details: ${errorMessage.substring(0, 500)}${errorMessage.length > 500 ? '...' : ''}`, 'ERROR');
+              throw new Error(`API returned status ${response.status}. Check logs for details.`);
           }
+          
+          const data = JSON.parse(responseBodyText);
+          logAction('Successfully parsed API response.', 'INFO');
 
-          const data = JSON.parse(responseBodyText); // Parse the successful response
-          logAction('Received response from Gemini API.');
-
-          // 4. Extract response text (handle potential variations)
-          let marvinResponse = 'Error: Could not extract response text.'; // Default error message
-          if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+          // 4. Extract response text
+          let marvinResponse = 'Error: Could not extract valid response text.';
+          if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
               marvinResponse = data.candidates[0].content.parts[0].text;
+              logAction(`Marvin: "${marvinResponse.substring(0, 100)}${marvinResponse.length > 100 ? '...' : ''}"`);
           } else if (data.error) {
-              // Handle cases where the API returns a JSON error object even with 200 OK (less common)
               marvinResponse = `API Error: ${data.error.message || JSON.stringify(data.error)}`;
-              logAction(`API returned error object: ${JSON.stringify(data.error)}`, 'ERROR');
+              logAction(`API returned 200 OK but with error object: ${JSON.stringify(data.error)}`, 'ERROR');
           } else {
-                logAction(`Unexpected API response format: ${responseBodyText.substring(0, 500)}...`, 'WARN');
+              logAction(`Unexpected API success response format: ${responseBodyText.substring(0, 500)}...`, 'WARN');
+              marvinResponse = 'Received an unexpected response format from the AI.';
           }
 
           addChatMessage('marvin', marvinResponse);
 
       } catch (error) {
-          console.error('Error during API call:', error); // Log full error to console
-          logAction(`API Call Failed: ${error.message}`, 'ERROR');
-          addChatMessage('marvin', `Sorry, I encountered an error processing your request.`); // More user-friendly message
+          console.error('sendMessage Error:', error);
+          logAction(`API Call Failed: ${error.message || 'Unknown fetch error'}`, 'ERROR');
+          addChatMessage('marvin', `Sorry, I encountered an error. Please check the System Logs for details.`);
       } finally {
-          // Re-enable input and button regardless of success/failure
           chatInput.disabled = false;
           sendButton.disabled = false;
           sendButton.textContent = 'Send';
-           chatInput.focus(); // Set focus back to input
+          chatInput.focus();
       }
     }
   </script>

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marvin Settings</title>
   <style>
+    /* Root variables and base styles (same as index.html) */
     :root {
         --primary-color: #3a86ff;
         --secondary-color: #8338ec;
@@ -15,23 +16,77 @@
         --success-color: #28a745;
         --transition: all 0.3s ease;
     }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f0f2f5; /* Consistent background */
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f0f2f5;
       color: #333;
       display: flex;
-      flex-direction: column; /* Ensure footer stays at bottom */
+      flex-direction: column;
       min-height: 100vh;
     }
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      flex-grow: 1; /* Allow container to fill space */
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        width: 100%;
     }
-    /* Using header from index.html */
+    main.container {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        flex-grow: 1;
+    }
+    /* Header styles (copied from index.html) */
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 50px;
+    }
+    .navbar .logo h1 {
+        margin: 0;
+        font-size: 1.75rem;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+        display: inline-block;
+    }
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 0.6rem 1rem;
+        border-radius: 5px;
+        transition: var(--transition);
+        display: block;
+        font-weight: 500;
+    }
+    nav ul li a:hover,
+    nav ul li.active a {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    /* Settings page specific styles */
     .control-panel {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -43,20 +98,20 @@
       border-radius: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       padding: 20px;
-      margin-bottom: 20px; /* Spacing between cards if they stack */
-      display: flex; /* Use flex for internal layout */
+      margin-bottom: 20px;
+      display: flex;
       flex-direction: column;
     }
     .card h2 {
         color: var(--primary-color);
-        margin-top: 0; /* Remove potential top margin */
+        margin-top: 0;
         margin-bottom: 1rem;
         border-bottom: 2px solid var(--primary-color);
         padding-bottom: 0.5rem;
         font-size: 1.25rem;
     }
     label {
-        display: block; /* Ensure labels are on their own line */
+        display: block;
         margin-bottom: 5px;
         font-weight: 600;
         color: #555;
@@ -68,22 +123,15 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 1rem;
-      box-sizing: border-box; /* Include padding in width */
+      box-sizing: border-box;
     }
     textarea {
-        min-height: 200px; /* Good default height for instructions */
+        min-height: 200px;
         font-family: monospace;
         resize: vertical;
     }
-    input[type="range"] {
-        width: calc(100% - 50px); /* Adjust width to fit value display */
-        vertical-align: middle;
-    }
-    #temperature-value {
-        display: inline-block;
-        width: 40px;
-        text-align: right;
-        font-weight: bold;
+    select {
+        cursor: pointer;
     }
     button {
         padding: 10px 15px;
@@ -92,29 +140,29 @@
         cursor: pointer;
         font-weight: 600;
         transition: var(--transition);
-        margin-right: 10px; /* Spacing between buttons */
-        margin-bottom: 10px; /* Spacing if buttons wrap */
+        margin-right: 10px;
+        margin-bottom: 10px;
     }
     button.primary {
         background-color: var(--primary-color);
         color: white;
     }
     button.primary:hover {
-        background-color: #2a6bd1; /* Darker shade */
+        background-color: #2a6bd1;
     }
     button.secondary {
         background-color: var(--secondary-color);
         color: white;
     }
      button.secondary:hover {
-        background-color: #6a2cb3; /* Darker shade */
+        background-color: #6a2cb3;
     }
     button.danger {
         background-color: var(--danger-color);
         color: white;
     }
     button.danger:hover {
-        background-color: #b82a37; /* Darker shade */
+        background-color: #b82a37;
     }
     .status {
       padding: 10px;
@@ -124,41 +172,53 @@
       border-left-style: solid;
       font-size: 0.9em;
     }
-    .status.success {
-        background-color: #d4edda;
-        border-color: var(--success-color);
-        color: #155724;
-    }
-    .status.error {
-        background-color: #f8d7da;
-        border-color: var(--danger-color);
-        color: #721c24;
-    }
-    .status.info {
-        background-color: #e2e3e5;
-        border-color: #6c757d;
-        color: #383d41;
-    }
-
+    .status.success { background-color: #d4edda; border-color: var(--success-color); color: #155724; }
+    .status.error { background-color: #f8d7da; border-color: var(--danger-color); color: #721c24; }
+    .status.info { background-color: #e2e3e5; border-color: #6c757d; color: #383d41; }
     .button-group {
         margin-top: auto; /* Push button group to bottom of card */
         padding-top: 1rem; /* Add space above buttons */
         display: flex;
-        flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+        flex-wrap: wrap;
         gap: 10px;
     }
-    /* Ensure settings page title is visible */
     h1 {
         color: var(--dark-color);
         margin-bottom: 1rem;
     }
+    /* Footer styles (optional, if needed) */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: var(--dark-color);
+      color: white;
+      margin-top: auto;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
-  <!-- Navigation is handled by index.html -->
+  <!-- Add Header/Navbar -->
+  <header class="container">
+    <div class="navbar">
+      <div class="logo">
+        <h1>Marvin AI</h1>
+      </div>
+      <nav>
+          <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="logs.html">Logs</a></li>
+            <!-- Add 'active' class to Settings link -->
+            <li class="active"><a href="settings.html">Settings</a></li>
+            <li><a href="analytics.html">Analytics</a></li>
+          </ul>
+      </nav>
+    </div>
+  </header>
 
-  <div class="container">
-     <h1>Marvin Settings</h1> <!-- Main page title -->
+  <!-- Main Settings Content -->
+  <main class="container">
+     <h1>Marvin Settings</h1>
 
     <div class="control-panel">
 
@@ -179,68 +239,137 @@
       <!-- Configuration Settings Card -->
        <div class="card">
         <h2>API Configuration</h2>
-        <label for="api-key">Gemini API Key:</label>
+
+        <!-- Model Selection Dropdown -->
+        <label for="model-select">Select Model:</label>
+        <select id="model-select">
+            <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+            <option value="gemini-1.0-pro">Gemini 1.0 Pro</option>
+            <!-- Add other models as needed -->
+            <option value="custom">Custom URL</option>
+        </select>
+
+        <!-- API Key Input -->
+        <label for="api-key">API Key:</label>
         <input type="password" id="api-key" placeholder="Enter your Gemini API key">
 
-        <label for="gemini-url">Gemini API URL:</label>
-        <input type="text" id="gemini-url" placeholder="Enter Gemini API URL" value="https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent">
-
-        <!-- Removed less relevant settings for now -->
+        <!-- Custom URL Input (conditionally shown) -->
+        <div id="custom-url-section" style="display: none;">
+             <label for="gemini-url">Custom API URL:</label>
+             <input type="text" id="gemini-url" placeholder="Enter full API URL for the custom model">
+        </div>
 
         <div class="button-group">
-            <button onclick="saveApiConfiguration()" class="primary">Save API Config</button>
+            <button id="saveConfigBtn" onclick="saveApiConfiguration()" class="primary">Save API Config</button>
         </div>
         <div id="configStatus" class="status info">API Configuration status.</div>
       </div>
 
-       <!-- Placeholder for other settings cards -->
-       <!-- <div class="card">
-            <h2>Memory Management</h2>
-            <textarea placeholder="Memory log content here..."></textarea>
-            <div class="button-group">
-                <button class="secondary">Load Memory</button>
-                <button class="primary">Save Memory</button>
-            </div>
-            <div class="status info">Memory status.</div>
-         </div> -->
-
     </div> <!-- End control-panel -->
-  </div> <!-- End container -->
+  </main> <!-- End container -->
 
-  <!-- Footer could be added back if this page is ever standalone -->
-  <!-- <footer>...</footer> -->
+  <!-- Optional Footer -->
+  <!-- <footer class="container">
+       <p>© 2025 Marvin AI. All rights reserved.</p>
+   </footer> -->
 
   <script>
     // DOM References
+    const modelSelect = document.getElementById('model-select');
     const apiKeyInput = document.getElementById('api-key');
-    const geminiUrlInput = document.getElementById('gemini-url');
+    const customUrlSection = document.getElementById('custom-url-section');
+    const geminiUrlInput = document.getElementById('gemini-url'); // Custom URL input
     const configStatusDiv = document.getElementById('configStatus');
+    const saveConfigBtn = document.getElementById('saveConfigBtn'); // Added ID to button
+    
     const systemInstructionsTextarea = document.getElementById('systemInstructions');
     const instructionsFileInput = document.getElementById('instructionsFileInput');
     const loadInstructionsBtn = document.getElementById('loadInstructionsBtn');
     const saveInstructionsBtn = document.getElementById('saveInstructionsBtn');
     const instructionsStatusDiv = document.getElementById('instructionsStatus');
 
-    // --- Configuration --- 
+    // Predefined URLs for standard models
+    const GEMINI_URLS = {
+        'gemini-1.5-pro': 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent',
+        'gemini-1.5-flash': 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+        'gemini-1.0-pro': 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent',
+        // Add others if needed
+    };
+
+    // --- Configuration Logic --- 
+    
+    // Show/hide custom URL input based on dropdown selection
+    modelSelect.addEventListener('change', () => {
+        if (modelSelect.value === 'custom') {
+            customUrlSection.style.display = 'block';
+            geminiUrlInput.placeholder = 'Enter full API URL (e.g., https://...)';
+        } else {
+            customUrlSection.style.display = 'none';
+        }
+    });
+
     function saveApiConfiguration() {
+      saveConfigBtn.disabled = true; // Prevent double-clicks
+      saveConfigBtn.textContent = 'Saving...';
+
+      const selectedModel = modelSelect.value;
+      let effectiveUrl = '';
+
+      if (selectedModel === 'custom') {
+          effectiveUrl = geminiUrlInput.value.trim();
+          if (!effectiveUrl) {
+              updateStatus(configStatusDiv, 'Custom API URL cannot be empty when selected.', 'error');
+              enableSaveButton();
+              return;
+          }
+          // Basic URL validation (optional but recommended)
+          try {
+              new URL(effectiveUrl);
+          } catch (_) {
+              updateStatus(configStatusDiv, 'Invalid Custom API URL format.', 'error');
+              enableSaveButton();
+              return;
+          }
+      } else {
+          effectiveUrl = GEMINI_URLS[selectedModel];
+          if (!effectiveUrl) {
+               updateStatus(configStatusDiv, 'Invalid model selection.', 'error'); // Should not happen normally
+               enableSaveButton();
+               return;
+          }
+      }
+
       const config = {
-        apiKey: apiKeyInput.value,
-        geminiUrl: geminiUrlInput.value
+        model: selectedModel, // Store the selected model key
+        apiKey: apiKeyInput.value.trim(),
+        // Store the URL actually used, whether predefined or custom
+        apiUrl: effectiveUrl 
       };
-      // Basic validation
+      
+      // API Key Validation
       if (!config.apiKey) {
           updateStatus(configStatusDiv, 'API Key cannot be empty.', 'error');
+          enableSaveButton();
           return;
       }
-       if (!config.geminiUrl) {
-           updateStatus(configStatusDiv, 'Gemini API URL cannot be empty.', 'error');
-           return;
-       }
-
-      localStorage.setItem('marvin-api-config', JSON.stringify(config));
-      updateStatus(configStatusDiv, 'API Configuration saved successfully.', 'success');
-      // Optional: Log action if a logging mechanism exists
-      // logAction('API Configuration settings saved'); 
+      
+      // Log the configuration being saved (excluding API key for security)
+      console.log('Saving config:', { model: config.model, apiUrl: config.apiUrl });
+      
+      try {
+          localStorage.setItem('marvin-api-config', JSON.stringify(config));
+          updateStatus(configStatusDiv, 'API Configuration saved successfully.', 'success');
+      } catch (e) {
+           console.error("Error saving to localStorage:", e);
+           updateStatus(configStatusDiv, 'Error saving configuration. LocalStorage might be full or disabled.', 'error');
+      }
+      enableSaveButton();
+    }
+    
+    function enableSaveButton() {
+        saveConfigBtn.disabled = false;
+        saveConfigBtn.textContent = 'Save API Config';
     }
 
     function loadApiConfiguration() {
@@ -248,14 +377,36 @@
         if (savedConfig) {
             try {
                 const config = JSON.parse(savedConfig);
+                console.log('Loading saved config:', config);
+                
                 apiKeyInput.value = config.apiKey || '';
-                geminiUrlInput.value = config.geminiUrl || 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent';
+                
+                // Set the dropdown value
+                if (config.model && modelSelect.querySelector(`option[value="${config.model}"]`)) {
+                   modelSelect.value = config.model;
+                } else if (config.apiUrl && !Object.values(GEMINI_URLS).includes(config.apiUrl)) {
+                    // If the saved URL doesn't match a predefined one, assume it was custom
+                    modelSelect.value = 'custom';
+                    geminiUrlInput.value = config.apiUrl; 
+                } else {
+                    // Default to a standard model if saved model is invalid or missing
+                    modelSelect.value = 'gemini-1.5-pro';
+                }
+
+                // Trigger change event to update UI (e.g., show/hide custom URL)
+                modelSelect.dispatchEvent(new Event('change'));
+
                 updateStatus(configStatusDiv, 'Loaded saved API configuration.', 'info');
             } catch (error) {
-                 updateStatus(configStatusDiv, `Error loading API config: ${error.message}`, 'error');
+                 console.error("Error loading/parsing config:", error);
+                 updateStatus(configStatusDiv, `Error loading API config: ${error.message}. Using defaults.`, 'error');
+                 modelSelect.value = 'gemini-1.5-pro'; // Reset to default on error
+                 modelSelect.dispatchEvent(new Event('change'));
             }
         } else {
-             updateStatus(configStatusDiv, 'No saved API configuration found. Please enter details.', 'info');
+             updateStatus(configStatusDiv, 'No saved API configuration found. Please select model and enter key.', 'info');
+             modelSelect.value = 'gemini-1.5-pro'; // Default selection
+             modelSelect.dispatchEvent(new Event('change'));
         }
     }
 
@@ -310,22 +461,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadApiConfiguration();
         updateStatus(instructionsStatusDiv, 'Load instructions from a file or edit directly.', 'info');
-        // loadDefaultInstructions(); // Consider adding this back
     });
-
-    // Placeholder for loading default instructions on page load
-    // async function loadDefaultInstructions() {
-    //    try {
-    //        // Example: Fetching from a specific file
-    //        // const response = await fetch('Files/System iNStructions Marvin 0.6.txt');
-    //        // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    //        // const text = await response.text();
-    //        // systemInstructionsTextarea.value = text;
-    //        // updateStatus(instructionsStatusDiv, 'Loaded default instructions.', 'info');
-    //    } catch (error) {
-    //         updateStatus(instructionsStatusDiv, `Could not load default instructions: ${error.message}`, 'error');
-    //    }
-    // }
 
   </script>
 </body>
